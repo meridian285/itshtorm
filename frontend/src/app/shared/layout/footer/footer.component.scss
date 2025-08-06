@@ -8,6 +8,7 @@
 
     .footer-menu {
       display: flex;
+      align-items: center;
 
       .logo {
 
@@ -21,6 +22,7 @@
           display: flex;
           justify-content: space-between;
           padding-left: 0;
+          margin: 0;
           list-style: none;
 
           a {

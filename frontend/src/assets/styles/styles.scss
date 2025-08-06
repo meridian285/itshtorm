@@ -1,3 +1,20 @@
-@import "global";
 @import "fonts";
 @import "variables";
+
+/* Importing Bootstrap SCSS file. */
+@import 'bootstrap/scss/bootstrap';
+// carouse-customize должен импортироваться после @import 'bootstrap/scss/bootstrap';
+@import "carouse-customize";
+
+@import "global";
+
+
+
+
+
+
+
+
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }

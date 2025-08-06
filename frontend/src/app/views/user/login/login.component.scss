@@ -1,0 +1,17 @@
+@import "../../../../assets/styles/auth-form";
+
+.login .container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 120px;
+  margin-bottom: 120px;
+
+  .page-image {
+    margin-left: 49px;
+
+    img {
+      vertical-align: center;
+    }
+  }
+}
