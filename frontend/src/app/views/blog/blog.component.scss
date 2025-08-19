@@ -1,0 +1,47 @@
+@import "../../../assets/styles/variables";
+@import "../../../assets/styles/mixins";
+
+.blog {
+  .container {
+    padding-top: 80px;
+    padding-bottom: 120px;
+    .blog-title {
+      @include head-lora-38;
+    }
+
+    .filter {
+      margin-top: 40px;
+
+      .filter-item {
+        position: relative;
+        padding: 8px 20px;
+        box-sizing: border-box;
+        border: 1px solid $blue-color;
+        border-radius: 5px;
+        background: $white-color;
+        width: 128px;
+        height: 37px;
+
+        color: rgba(112, 159, 220, 1);
+        font-family: Montserrat, sans-serif;
+        font-size: 16px;
+        font-weight: 400;
+
+        .close {
+          position: absolute;
+          //top: calc(50% - 9px);
+          top: 7px;
+          right: 20px;
+          cursor: pointer;
+        }
+      }
+    }
+
+    .cards {
+      margin-top: 40px;
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr 1fr;
+      row-gap: 40px;
+    }
+  }
+}

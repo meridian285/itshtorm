@@ -1,0 +1,246 @@
+@import "../../../assets/styles/variables";
+@import "../../../assets/styles/mixins";
+
+.article {
+  .container {
+    padding-top: 80px;
+    padding-bottom: 120px;
+
+    .bread-crumbs {
+      .blog {
+        color: #B9D5FDFF;
+        text-decoration: none;
+        font-family: Montserrat, sans-serif;
+        font-size: 16px;
+        font-weight: 400;
+      }
+
+      .bread-crumbs-title {
+        color: $blue-color;
+        font-family: Montserrat, sans-serif;
+        font-size: 16px;
+        font-weight: 500;
+      }
+    }
+
+    .article-description {
+      margin-top: 60px;
+      display: flex;
+      justify-content: space-between;
+
+      .about-article {
+        width: 615px;
+
+        .article-title {
+          margin: 0;
+          color: $blue-color;
+          @include head-lora-38;
+          line-height: 130%;
+          text-align: left;
+        }
+
+        .article-description-text {
+          margin-top: 40px;
+          color: $blue-color;
+          font-family: Montserrat, sans-serif;
+          font-size: 20px;
+          font-weight: 400;
+          line-height: 130%;
+          text-align: left;
+        }
+      }
+    }
+
+    .article-main-block {
+      margin-top: 60px;
+      display: flex;
+      justify-content: space-between;
+      gap: 60px;
+
+      .article-content {
+        width: 854px;
+
+        .full-article {
+          width: 818px;
+        }
+
+        .article-social {
+          margin-top: 60px;
+          color: $blue-color;
+          font-family: Montserrat, sans-serif;
+          font-size: 14px;
+          font-weight: 500;
+
+          a {
+            margin-left: 20px;
+          }
+        }
+
+        .article-comments {
+          margin-top: 60px;
+
+          .article-comments-title {
+            @include head-lora-38;
+          }
+
+          .login-or-signup {
+            margin-top: 20px;
+            margin-bottom: 20px;
+            font-family: Montserrat, sans-serif;
+            font-size: 14px;
+            font-weight: 400;
+            color: $black-text-color;
+
+            span {
+              cursor: pointer;
+              color: $blue-color;
+            }
+          }
+
+          .write-comment {
+            margin-top: 20px;
+            margin-bottom: 40px;
+            color: $black-text-color;
+            font-family: Montserrat, sans-serif;
+            font-size: 14px;
+            font-weight: 400;
+          }
+
+          .create-comment {
+            textarea {
+              padding: 20px;
+              resize: none;
+              border: 1.5px solid $blue-color;
+              border-radius: 3px;
+              background: $white-color;
+            }
+
+            .btn-comment {
+              width: 422px;
+              margin-top: 20px;
+            }
+          }
+
+
+          .comments {
+            margin-top: 40px;
+
+            .comment {
+              margin-bottom: 40px;
+
+              .comment-header {
+                display: flex;
+
+                .comment-header-photo {
+                  width: 65px;
+                  height: 65px;
+                  border: 2px solid $blue-color;
+                  border-radius: 50%;
+                }
+
+                .comment-header-user {
+                  margin-left: 26px;
+
+                  .comment-header-name {
+                    color: $blue-color;
+                    font-family: Montserrat, sans-serif;
+                    font-size: 18px;
+                    font-weight: 400;
+                    line-height: 130%;
+                  }
+
+                  .comment-header-date {
+                    margin-top: 10px;
+                    color: #BEBEBEFF;
+                    font-family: Montserrat, sans-serif;
+                    font-size: 14px;
+                    font-weight: 400;
+                  }
+                }
+              }
+
+              .comment-text {
+                margin-top: 15px;
+                color: $black-text-color;
+                font-family: Montserrat, sans-serif;
+                font-size: 14px;
+                font-weight: 400;
+                line-height: 140%;
+              }
+
+              .comment-options {
+                margin-top: 40px;
+                display: flex;
+                align-items: center;
+
+                .comment-options-like {
+                  display: flex;
+                  align-items: center;
+                  .comment-options-like-count {
+                    color: $black-text-color;
+                    font-family: Montserrat, sans-serif;
+                    font-size: 14px;
+                    font-weight: 400;
+                  }
+
+                  .comment-options-like-icon {
+                    cursor: pointer;
+                    margin-left: 3px;
+                  }
+                }
+                .comment-options-dislike {
+                  margin-left: 15px;
+                  display: flex;
+                  align-items: center;
+                  .comment-options-dislike-count {
+                    color: $black-text-color;
+                    font-family: Montserrat, sans-serif;
+                    font-size: 14px;
+                    font-weight: 400;
+                  }
+
+                  .comment-options-dislike-icon {
+                    cursor: pointer;
+                    margin-left: 3px;
+                  }
+                }
+
+                .comment-options-spam {
+                  cursor: pointer;
+                  margin-left: 17px;
+                }
+              }
+            }
+
+            .more-comments {
+              cursor: pointer;
+              margin-top: 60px;
+              color: $blue-color;
+              font-family: Montserrat, sans-serif;
+              font-size: 20px;
+              font-weight: 500;
+            }
+          }
+        }
+      }
+
+
+      .related-articles {
+        margin-top: 60px;
+
+        .related-articles-title {
+          margin-bottom: 20px;
+          @include head-lora-26;
+        }
+
+        .related-articles-cards {
+          .card {
+            margin-bottom: 60px;
+          }
+        }
+      }
+    }
+  }
+}
+
+

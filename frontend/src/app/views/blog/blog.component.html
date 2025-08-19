@@ -1,0 +1,27 @@
+<section class="blog">
+  <div class="container">
+    <h2 class="blog-title">Блог</h2>
+    <div class="filter">
+      <div class="filter-item">
+        Дизайн
+        <i class="close">
+          <svg width="16" height="17" viewBox="0 0 16 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <g clip-path="url(#clip0_19075_586)">
+              <line x1="1.93553" y1="3.15002" x2="13.9563" y2="15.1708" stroke="#709FDC" stroke-linecap="round"/>
+              <line x1="13.9236" y1="3.12984" x2="1.90278" y2="15.1507" stroke="#709FDC" stroke-linecap="round"/>
+            </g>
+            <defs>
+              <clipPath id="clip0_19075_586">
+                <rect width="16" height="16" fill="white" transform="translate(0 0.5)"/>
+              </clipPath>
+            </defs>
+          </svg>
+        </i>
+
+      </div>
+    </div>
+    <div class="cards">
+      <article-card [card]=" article" *ngFor="let article of articles"></article-card>
+    </div>
+  </div>
+</section>
