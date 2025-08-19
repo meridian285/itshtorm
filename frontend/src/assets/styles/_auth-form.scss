@@ -17,6 +17,10 @@
     .auth-input {
       margin-bottom: 10px;
 
+      &:last-child {
+        margin-bottom: 0;
+      }
+
       input {
         width: 422px;
       }

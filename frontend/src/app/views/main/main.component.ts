@@ -1,6 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {NgbCarouselConfig} from "@ng-bootstrap/ng-bootstrap";
 import {OwlOptions} from "ngx-owl-carousel-o";
+import {FavoriteService} from "../../shared/services/favorite.service";
+import {ArticlesType} from "../../types/articles.type";
+import {DefaultResponseType} from "../../types/default-response.type";
 
 @Component({
   selector: 'app-main',
@@ -8,6 +11,16 @@ import {OwlOptions} from "ngx-owl-carousel-o";
   styleUrls: ['./main.component.scss']
 })
 export class MainComponent implements OnInit {
+
+  // @ViewChild('servicesOffered') element!: ElementRef;
+
+  // scrollToTarget() {
+  //   if (this.element && this.element.element) {
+  //     this.element.element.nativeElement.scrollIntoView({ behavior: 'smooth' });
+  //   }
+  // }
+
+  favoriteArticles: ArticlesType[] | null = null;
 
   reviews = [
     {
@@ -56,12 +69,28 @@ export class MainComponent implements OnInit {
     '@import "../../../assets/images/slider/img3.png'
   ];
 
-  constructor(config: NgbCarouselConfig) {
+  constructor(config: NgbCarouselConfig,
+              private favorites: FavoriteService,
+
+  ) {
     //интервал смены слайдера
     config.interval = 100000;
   }
 
   ngOnInit(): void {
-  }
+    this.favorites.getTopArticles()
+      .subscribe({
+        next: (data: ArticlesType[] | DefaultResponseType) => {
+          if ((data as DefaultResponseType).error !== undefined) {
+            const error = (data as DefaultResponseType).message;
+            throw new Error(error);
+          }
 
+          this.favoriteArticles = data as ArticlesType[];
+        },
+        error: (error) => {
+
+        }
+      })
+  }
 }

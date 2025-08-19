@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 
 @Component({
   selector: 'app-footer',
@@ -7,9 +7,26 @@ import { Component, OnInit } from '@angular/core';
 })
 export class FooterComponent implements OnInit {
 
-  constructor() { }
+  modalDialog: boolean = false;
+  requestForCallForm: boolean = false;
+
+  constructor() {
+  }
 
   ngOnInit(): void {
   }
 
+  close() {
+    this.modalDialog = false;
+    this.requestForCallForm = false;
+  }
+
+  open() {
+    this.requestForCallForm = true
+  }
+
+  orderConsultation() {
+    this.requestForCallForm = false;
+    this.modalDialog = true;
+  }
 }
