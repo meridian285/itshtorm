@@ -81,6 +81,7 @@
 
           .article-comments-title {
             @include head-lora-38;
+            line-height: 130%;
           }
 
           .login-or-signup {
@@ -91,10 +92,13 @@
             font-weight: 400;
             color: $black-text-color;
 
+
             span {
               cursor: pointer;
               color: $blue-color;
             }
+
+
           }
 
           .write-comment {
@@ -123,7 +127,7 @@
 
 
           .comments {
-            margin-top: 40px;
+            margin-top: 60px;
 
             .comment {
               margin-bottom: 40px;
@@ -176,6 +180,7 @@
                 .comment-options-like {
                   display: flex;
                   align-items: center;
+
                   .comment-options-like-count {
                     color: $black-text-color;
                     font-family: Montserrat, sans-serif;
@@ -188,10 +193,12 @@
                     margin-left: 3px;
                   }
                 }
+
                 .comment-options-dislike {
                   margin-left: 15px;
                   display: flex;
                   align-items: center;
+
                   .comment-options-dislike-count {
                     color: $black-text-color;
                     font-family: Montserrat, sans-serif;

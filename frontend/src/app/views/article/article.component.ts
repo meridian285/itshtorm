@@ -3,6 +3,7 @@ import {ArticlesService} from "../../shared/services/articles.service";
 import {ArticlesType} from "../../types/articles.type";
 import {ArticleType} from "../../types/article.type";
 import {DefaultResponseType} from "../../types/default-response.type";
+import {AuthService} from "../../core/auth/auth.service";
 
 @Component({
   selector: 'app-article',
@@ -11,15 +12,22 @@ import {DefaultResponseType} from "../../types/default-response.type";
 })
 export class ArticleComponent implements OnInit {
 
+  comments = [6];
+  loggedIn: boolean = false;
+
   @ViewChild('articleText') articleText: ElementRef | null = null;
 
   article: ArticleType | null = null;
   relatedArticles: ArticlesType[] | null = null;
-  constructor(private articlesService: ArticlesService) { }
+
+  constructor(private articlesService: ArticlesService,
+              private authService: AuthService) {
+    this.loggedIn = this.authService.getIsLoggedIn();
+  }
 
   ngOnInit(): void {
     this.articlesService.getArticle()
-      .subscribe((data: ArticleType | DefaultResponseType)=> {
+      .subscribe((data: ArticleType | DefaultResponseType) => {
         if ((data as DefaultResponseType).error !== undefined) {
           const error = (data as DefaultResponseType).message;
           throw new Error(error);

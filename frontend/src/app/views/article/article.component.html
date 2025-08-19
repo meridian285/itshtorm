@@ -61,13 +61,13 @@
             Комментарии к статье
           </div>
 
-          <div class="login-or-signup">
+          <div class="login-or-signup" *ngIf="!loggedIn">
             Чтобы оставлять комментарии, <span routerLink="/login">войдите</span> или <span routerLink="/signup">зарегистрируйтесь</span>.
           </div>
 
-          <div class="write-comment">Будьте первым, кто оставит свой комментарий к статье!</div>
+          <div class="write-comment" *ngIf="loggedIn && comments.length < 1">Будьте первым, кто оставит свой комментарий к статье!</div>
 
-          <div class="create-comment">
+          <div class="create-comment" *ngIf="loggedIn">
             <textarea placeholder="Напишите Ваш комментарий к статье..."
                       cols="114" rows="10" spellcheck="true" wrap="soft"></textarea>
             <button type="button" class="button btn-comment">Опубликовать комментарий</button>
