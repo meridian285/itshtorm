@@ -1,11 +1,13 @@
-<div class="popular-articles-card">
-  <img src="../../../../assets/images/images-card/{{card.image}}" alt="creating-sites">
-  <div class="card-info">
-    <div class="service-card-info-title">
-      {{card.title}}
-    </div>
-    <div class="service-card-info-content">
-      {{card.description}}
+<div class="article-card">
+  <div class="article-card-content">
+    <div class="article-card-image" style="background-image: url({{'../../../../assets/images/images-card/' + card.image}})"></div>
+    <div class="card-info">
+      <div class="service-card-info-title">
+        {{card.title}}
+      </div>
+      <div class="service-card-info-content">
+        {{card.description}}
+      </div>
     </div>
   </div>
   <div class="service-card-action">
