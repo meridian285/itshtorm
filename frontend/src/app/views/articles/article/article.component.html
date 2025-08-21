@@ -80,7 +80,7 @@
                   <div class="comment-header-photo" style="background-image: url('/assets/images/users/mask-group.png')"></div>
                   <div class="comment-header-user">
                     <div class="comment-header-name">{{comment.user.name}}</div>
-                    <div class="comment-header-date">{{comment.date}}</div>
+                    <div class="comment-header-date">{{comment.date | date: 'dd.MM.yyyy HH:mm'}}</div>
                   </div>
                 </div>
                 <div class="comment-text">
