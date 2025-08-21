@@ -10,6 +10,7 @@
   .container {
     display: flex;
     align-items: center;
+    justify-content: space-between;
 
     .logo {
 
@@ -56,7 +57,7 @@
     }
 
     .action {
-      margin-left: 141px;
+      margin-left: 50px;
       display: flex;
       align-items: center;
       cursor: pointer;

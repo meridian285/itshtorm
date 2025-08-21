@@ -31,6 +31,20 @@ export class HeaderComponent implements OnInit {
 
     this.authService.isLogged$.subscribe((isLoggedIn: boolean) => {
       this.isLogged = isLoggedIn;
+
+      if (this.isLogged) {
+          this.userService.getUserInfo()
+            .subscribe((data: UserInfoType | DefaultResponseType)=> {
+              if ((data as DefaultResponseType).error !== undefined) {
+                const error = (data as DefaultResponseType).message;
+                throw new Error(error);
+              }
+
+              this.userInfo = data as UserInfoType;
+
+              console.log(this.userInfo.name)
+            })
+      }
     });
   }
 

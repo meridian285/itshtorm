@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import {DefaultResponseType} from "../../types/default-response.type";
-import {ArticlesService} from "../../shared/services/articles.service";
-import {ArticlesType} from "../../types/articles.type";
-import {ArticlesWithFilterType} from "../../types/articles-with-filter.type";
+import {ArticlesType} from "../../../types/articles.type";
+import {ArticlesService} from "../../../shared/services/articles.service";
+import {DefaultResponseType} from "../../../types/default-response.type";
+import {ArticlesWithFilterType} from "../../../types/articles-with-filter.type";
 
 @Component({
   selector: 'app-blog',

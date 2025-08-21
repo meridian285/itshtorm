@@ -5,12 +5,14 @@ import {CommonModule} from "@angular/common";
 import {UserRoutingModule} from "./user-routing.module";
 import {SharedModule} from "../../shared/shared.module";
 import {ReactiveFormsModule} from "@angular/forms";
+import { AgreementComponent } from './agreement/agreement.component';
 
 
 @NgModule({
   declarations: [
     LoginComponent,
-    SignupComponent
+    SignupComponent,
+    AgreementComponent
   ],
   imports: [
     CommonModule,

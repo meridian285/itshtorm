@@ -16,14 +16,6 @@ export class UserService {
   }
 
   getUserInfo(): Observable<UserInfoType | DefaultResponseType> {
-    const tokens = this.authService.getTokens();
-    let headers: HttpHeaders = new HttpHeaders()
-
-    if (tokens && tokens.accessToken) {
-      headers.set("x-auth", tokens.accessToken);
-      return this.http.get<UserInfoType | DefaultResponseType>(environment.api + 'users', {headers: headers});
-    }
-
-    throw throwError(() => 'Can not find token');
+    return this.http.get<UserInfoType | DefaultResponseType>(environment.api + 'users');
   }
 }

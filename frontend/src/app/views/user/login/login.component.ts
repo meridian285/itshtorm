@@ -59,7 +59,6 @@ export class LoginComponent implements OnInit {
             this.authService.setTokens(loginResponse.accessToken, loginResponse.refreshToken);
             this.authService.userId = loginResponse.userId;
             this.authService.isLogged = true;
-            this.getUserInfo();
             this._snackBar.open('Вы успешно авторизовались');
             this.router.navigate(['/']);
 
@@ -73,31 +72,5 @@ export class LoginComponent implements OnInit {
           }
         })
     }
-  }
-
-  getUserInfo() {
-    if (this.authService.isLogged) {
-      this.userService.getUserInfo()
-        .subscribe({
-          next: (data: UserInfoType | DefaultResponseType) => {
-            let error = null;
-            if ((data as DefaultResponseType).error !== undefined) {
-              error = (data as DefaultResponseType).message
-            }
-
-            this.userInfo = data as UserInfoType;
-            console.log(this.userInfo)
-
-          },
-          error: (errorResponse: HttpErrorResponse) => {
-            if (errorResponse.error && errorResponse.message) {
-              this._snackBar.open(errorResponse.error.message);
-            } else {
-              this._snackBar.open('Ошибка авторизации');
-            }
-          }
-        })
-    }
-
   }
 }

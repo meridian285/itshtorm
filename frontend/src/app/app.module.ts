@@ -11,12 +11,12 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {CarouselModule} from "ngx-owl-carousel-o";
 import {SharedModule} from "./shared/shared.module";
-import {HttpClientModule} from "@angular/common/http";
-import {MatSnackBarModule} from "@angular/material/snack-bar";
+import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
+import {MAT_SNACK_BAR_DEFAULT_OPTIONS, MatSnackBarModule} from "@angular/material/snack-bar";
 import {ReactiveFormsModule} from "@angular/forms";
-import {BlogComponent} from "./views/blog/blog.component";
-import {ArticleComponent} from './views/article/article.component';
 import {MatMenuModule} from "@angular/material/menu";
+import {ArticlesModule} from "./views/articles/articles.module";
+import {AuthInterceptor} from "./core/auth/auth.interceptor";
 
 @NgModule({
   declarations: [
@@ -25,8 +25,6 @@ import {MatMenuModule} from "@angular/material/menu";
     HeaderComponent,
     FooterComponent,
     MainComponent,
-    BlogComponent,
-    ArticleComponent
   ],
   imports: [
     BrowserModule,
@@ -35,12 +33,16 @@ import {MatMenuModule} from "@angular/material/menu";
     AppRoutingModule,
     SharedModule,
     HttpClientModule,
+    ArticlesModule,
     NgbModule,
     CarouselModule,
     BrowserAnimationsModule,
     ReactiveFormsModule
   ],
-  providers: [],
+  providers: [
+    {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true},
+    {provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: {duration: 2500}}
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule {

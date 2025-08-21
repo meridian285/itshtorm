@@ -18,8 +18,8 @@ export class ArticlesService {
     return this.http.get<ArticlesWithFilterType | DefaultResponseType>(environment.api + 'articles');
   }
 
-  getArticle(): Observable<ArticleType | DefaultResponseType> {
-    return this.http.get<ArticleType | DefaultResponseType>(environment.api + 'articles/dazhe_u_frilansa_yest_minusi_mariya_volkova_o_tom_pochemu_smenila_svobodu_na_ofis');
+  getArticle(url: string): Observable<ArticleType | DefaultResponseType> {
+    return this.http.get<ArticleType | DefaultResponseType>(environment.api + 'articles/' + url);
   }
   getArticlesRelate(): Observable<ArticlesType[] | DefaultResponseType> {
     return this.http.get<ArticlesType[] | DefaultResponseType>(environment.api + 'articles/related/6_saitov_dlya_povisheniya__produktivnosti');
