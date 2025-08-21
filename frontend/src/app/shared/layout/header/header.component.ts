@@ -1,12 +1,10 @@
 import {Component, OnInit} from '@angular/core';
 import {AuthService} from "../../../core/auth/auth.service";
-import {Observable} from "rxjs";
 import {UserService} from "../../services/user.service";
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {Router} from "@angular/router";
 import {UserInfoType} from "../../../types/user-info.type";
 import {DefaultResponseType} from "../../../types/default-response.type";
-import {HttpErrorResponse} from "@angular/common/http";
 
 @Component({
   selector: 'app-header',
@@ -16,7 +14,7 @@ import {HttpErrorResponse} from "@angular/common/http";
 export class HeaderComponent implements OnInit {
 
   selectedMenu: string | null = null;
-  isLogged = true;
+  isLogged: boolean = true;
   userInfo: UserInfoType | null = null;
 
   constructor(private authService: AuthService,
@@ -24,7 +22,6 @@ export class HeaderComponent implements OnInit {
               private router: Router,
               private userService: UserService,
   ) {
-    this.isLogged = this.authService.getIsLoggedIn();
   }
 
   ngOnInit(): void {
@@ -41,8 +38,6 @@ export class HeaderComponent implements OnInit {
               }
 
               this.userInfo = data as UserInfoType;
-
-              console.log(this.userInfo.name)
             })
       }
     });
