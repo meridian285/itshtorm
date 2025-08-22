@@ -4,17 +4,21 @@ import {FormsModule} from "@angular/forms";
 import {RouterModule} from "@angular/router";
 import { ArticleCardComponent } from './components/article-card/article-card.component';
 import { ModalDialogComponent } from './components/modal-dialog/modal-dialog.component';
+import {CommentComponent} from "./components/comment/comment.component";
 
 
 
 @NgModule({
-  declarations: [
-    ArticleCardComponent,
-    ModalDialogComponent
-  ],
-  exports: [
-    ArticleCardComponent
-  ],
+    declarations: [
+        ArticleCardComponent,
+        ModalDialogComponent,
+        CommentComponent,
+        CommentComponent
+    ],
+    exports: [
+        ArticleCardComponent,
+        CommentComponent
+    ],
   imports: [
     RouterModule,
     FormsModule,
