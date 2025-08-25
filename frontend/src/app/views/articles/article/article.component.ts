@@ -8,6 +8,7 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {CommentsService} from "../../../shared/services/comments.service";
 import {CommentsType} from "../../../types/comments.type";
 import {CommentType} from "../../../types/comment.type";
+import {Observable} from "rxjs";
 
 @Component({
   selector: 'app-article',
@@ -20,6 +21,7 @@ export class ArticleComponent implements OnInit {
   comments: CommentType[] = [];
   commentsCount: number = 0;
   loggedIn: boolean = false;
+  // loggedIn$: Observable<boolean> = this.authService.isLogged$;
 
   @ViewChild('articleText') articleText: ElementRef | null = null;
 

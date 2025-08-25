@@ -14,7 +14,7 @@
             <p>Instagram для вашего бизнеса <span>-15%</span>!</p>
           </div>
           <div class="action">
-            <button class="button">Подробнее</button>
+            <button class="button" (click)="open('order', 'Продвижение')">Подробнее</button>
           </div>
         </div>
       </ng-template>
@@ -309,4 +309,6 @@
       </div>
     </section>
   </div>
+
+  <modal-dialog [isOpenModal]="isOpenModal" [type]="type" [selectedPoint]="selectedPoint"></modal-dialog>
 </main>

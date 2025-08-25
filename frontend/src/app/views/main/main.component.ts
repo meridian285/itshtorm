@@ -1,9 +1,10 @@
-import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {NgbCarouselConfig} from "@ng-bootstrap/ng-bootstrap";
 import {OwlOptions} from "ngx-owl-carousel-o";
 import {FavoriteService} from "../../shared/services/favorite.service";
 import {ArticlesType} from "../../types/articles.type";
 import {DefaultResponseType} from "../../types/default-response.type";
+import {RequestService} from "../../shared/services/request.service";
 
 @Component({
   selector: 'app-main',
@@ -12,15 +13,10 @@ import {DefaultResponseType} from "../../types/default-response.type";
 })
 export class MainComponent implements OnInit {
 
-  // @ViewChild('servicesOffered') element!: ElementRef;
-
-  // scrollToTarget() {
-  //   if (this.element && this.element.element) {
-  //     this.element.element.nativeElement.scrollIntoView({ behavior: 'smooth' });
-  //   }
-  // }
-
+  type: string = '';
+  isOpenModal: boolean  = false;
   favoriteArticles: ArticlesType[] | null = null;
+  selectedPoint: string = '';
 
   reviews = [
     {
@@ -71,6 +67,7 @@ export class MainComponent implements OnInit {
 
   constructor(config: NgbCarouselConfig,
               private favorites: FavoriteService,
+              private requestService: RequestService
 
   ) {
     //интервал смены слайдера
@@ -92,5 +89,12 @@ export class MainComponent implements OnInit {
 
         }
       })
+  }
+
+  open(type: string, value: string) {
+    this.type = type;
+    this.isOpenModal = true;
+    this.selectedPoint = value;
+
   }
 }

@@ -16,8 +16,6 @@ import {UserService} from "../../../shared/services/user.service";
 })
 export class LoginComponent implements OnInit {
 
-  userInfo: UserInfoType | null = null;
-
   loginForm = this.fb.group({
     email: ['', [Validators.email, Validators.required]],
     password: ['', [Validators.required]],
