@@ -18,7 +18,6 @@ export class ModalDialogComponent implements OnInit {
   @Input() type: string = '';
   thankYouForm: boolean = false;
   isOpenModal$!: Observable<boolean>;
-  // isOpenModal$:
 
   requestForm = this.fb.group({
     name: ['', [Validators.required]],
@@ -34,14 +33,12 @@ export class ModalDialogComponent implements OnInit {
 
   ngOnInit(): void {
     this.isOpenModal$ = this.modalStateService.isOpenModal$;
-    // if (this.selectedService) {
-    //   this.selectedService.nativeElement.value = this.selectedPoint;
-    // }
   }
 
   close() {
     this.modalStateService.isOpenModal = false;
     this.thankYouForm = false;
+    this.requestForm.reset();
   }
 
   sendRequest() {
@@ -60,6 +57,10 @@ export class ModalDialogComponent implements OnInit {
 
           this._snackBar.open(data.message);
         })
+
+      this.modalStateService.isOpenModal = false;
+      this.thankYouForm = true;
+      this.requestForm.reset();
     }
   }
 }
