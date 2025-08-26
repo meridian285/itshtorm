@@ -3,6 +3,8 @@ import {RequestService} from "../../services/request.service";
 import {DefaultResponseType} from "../../../types/default-response.type";
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {FormBuilder, Validators} from "@angular/forms";
+import {ModalStateService} from "../../services/modal-state.service";
+import {Observable} from "rxjs";
 
 @Component({
   selector: 'modal-dialog',
@@ -12,10 +14,11 @@ import {FormBuilder, Validators} from "@angular/forms";
 export class ModalDialogComponent implements OnInit {
 
   @ViewChild('selectedService') selectedService: ElementRef | null = null;
-  @Input() selectedPoint: string  = '';
+  @Input() selectedPoint: string = '';
   @Input() type: string = '';
-  @Input() isOpenModal: boolean = false;
   thankYouForm: boolean = false;
+  isOpenModal$!: Observable<boolean>;
+  // isOpenModal$:
 
   requestForm = this.fb.group({
     name: ['', [Validators.required]],
@@ -25,23 +28,25 @@ export class ModalDialogComponent implements OnInit {
 
   constructor(private requestService: RequestService,
               private _snackBar: MatSnackBar,
-              private fb: FormBuilder,) {
+              private fb: FormBuilder,
+              private modalStateService: ModalStateService) {
   }
 
   ngOnInit(): void {
-    if (this.selectedService) {
-      this.selectedService.nativeElement.value = this.selectedPoint;
-    }
+    this.isOpenModal$ = this.modalStateService.isOpenModal$;
+    // if (this.selectedService) {
+    //   this.selectedService.nativeElement.value = this.selectedPoint;
+    // }
   }
 
   close() {
-    this.isOpenModal = false;
+    this.modalStateService.isOpenModal = false;
     this.thankYouForm = false;
   }
 
   sendRequest() {
     if (this.requestForm && this.requestForm.value.name && this.requestForm.value.phone) {
-      this.isOpenModal = true;
+      this.modalStateService.isOpenModal = true;
       this.thankYouForm = false;
 
       this.requestService.request(this.requestForm.value.name, this.requestForm.value.phone, this.selectedPoint, this.type)

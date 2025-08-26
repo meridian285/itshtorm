@@ -5,6 +5,7 @@ import {FavoriteService} from "../../shared/services/favorite.service";
 import {ArticlesType} from "../../types/articles.type";
 import {DefaultResponseType} from "../../types/default-response.type";
 import {RequestService} from "../../shared/services/request.service";
+import {ModalStateService} from "../../shared/services/modal-state.service";
 
 @Component({
   selector: 'app-main',
@@ -14,7 +15,6 @@ import {RequestService} from "../../shared/services/request.service";
 export class MainComponent implements OnInit {
 
   type: string = '';
-  isOpenModal: boolean  = false;
   favoriteArticles: ArticlesType[] | null = null;
   selectedPoint: string = '';
 
@@ -67,7 +67,7 @@ export class MainComponent implements OnInit {
 
   constructor(config: NgbCarouselConfig,
               private favorites: FavoriteService,
-              private requestService: RequestService
+              private modalStateService: ModalStateService
 
   ) {
     //интервал смены слайдера
@@ -93,7 +93,7 @@ export class MainComponent implements OnInit {
 
   open(type: string, value: string) {
     this.type = type;
-    this.isOpenModal = true;
+    this.modalStateService.isOpenModal = true;
     this.selectedPoint = value;
 
   }
