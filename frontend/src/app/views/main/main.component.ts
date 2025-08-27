@@ -4,8 +4,6 @@ import {OwlOptions} from "ngx-owl-carousel-o";
 import {FavoriteService} from "../../shared/services/favorite.service";
 import {ArticlesType} from "../../types/articles.type";
 import {DefaultResponseType} from "../../types/default-response.type";
-import {RequestService} from "../../shared/services/request.service";
-import {ModalStateService} from "../../shared/services/modal-state.service";
 
 @Component({
   selector: 'app-main',
@@ -17,6 +15,8 @@ export class MainComponent implements OnInit {
   type: string = '';
   favoriteArticles: ArticlesType[] | null = null;
   selectedPoint: string = '';
+
+  isDialogOpen = false;
 
   reviews = [
     {
@@ -58,6 +58,32 @@ export class MainComponent implements OnInit {
     },
     nav: false
   }
+  services = [
+    {
+      title: 'Создание сайтов',
+      image: 'creating-sites.png',
+      description: 'В краткие сроки мы создадим качественный и самое главное продающий сайт для продвижения Вашего бизнеса!',
+      price: '7 500'
+    },
+    {
+      title: 'Продвижение',
+      image: 'promotion.png',
+      description: 'Вам нужен качественный SMM-специалист или грамотный таргетолог? Мы готовы оказать Вам услугу “Продвижения” на наивысшем уровне!',
+      price: '3 500'
+    },
+    {
+      title: 'Реклама',
+      image: 'img.png',
+      description: 'Без рекламы не может обойтись ни один бизнес или специалист. Обращаясь к нам, мы гарантируем быстрый прирост клиентов за счёт правильно настроенной рекламы.',
+      price: '1 000'
+    },
+    {
+      title: 'Копирайтинг',
+      image: 'copywriting.png',
+      description: 'Наши копирайтеры готовы написать Вам любые продающие текста, которые не только обеспечат рост охватов, но и помогут выйти на новый уровень в продажах.',
+      price: '750'
+    }
+  ]
 
   images = [
     '@import "../../../assets/images/slider/img1.png',
@@ -66,10 +92,7 @@ export class MainComponent implements OnInit {
   ];
 
   constructor(config: NgbCarouselConfig,
-              private favorites: FavoriteService,
-              private modalStateService: ModalStateService
-
-  ) {
+              private favorites: FavoriteService) {
     //интервал смены слайдера
     config.interval = 100000;
   }
@@ -93,8 +116,7 @@ export class MainComponent implements OnInit {
 
   open(type: string, value: string) {
     this.type = type;
-    this.modalStateService.isOpenModal = true;
     this.selectedPoint = value;
-
+    this.isDialogOpen = true;
   }
 }

@@ -7,8 +7,9 @@ import {Component, OnInit} from '@angular/core';
 })
 export class FooterComponent implements OnInit {
 
-  modalDialog: boolean = false;
-  requestForCallForm: boolean = false;
+  type = '';
+  selectedPoint = '';
+  isDialogOpen = false;
 
   constructor() {
   }
@@ -16,17 +17,8 @@ export class FooterComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  close() {
-    this.modalDialog = false;
-    this.requestForCallForm = false;
-  }
-
-  open() {
-    this.requestForCallForm = true
-  }
-
-  orderConsultation() {
-    this.requestForCallForm = false;
-    this.modalDialog = true;
+  open(type: string) {
+    this.type = type;
+    this.isDialogOpen = true;
   }
 }

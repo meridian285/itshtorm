@@ -34,7 +34,7 @@
             <p>Весь декабрь у нас действует акция на работу копирайтера.</p>
           </div>
           <div class="action">
-            <button class="button" (click)="open('order', 'Копирайтер')">Подробнее</button>
+            <button class="button" (click)="open('order', 'Копирайтинг')">Подробнее</button>
           </div>
         </div>
       </ng-template>
@@ -65,74 +65,18 @@
         Услуги, которые мы предлагаем
       </div>
       <div class="services">
-        <div class="service-card">
-          <img src="../../../assets/images/services/creating-sites.png" alt="creating-sites">
+        <div class="service-card" *ngFor="let service of services">
+          <img src="../../../assets/images/services/{{service.image}}" alt="creating-sites">
           <div class="card-info">
             <div class="service-card-info-title">
-              Создание сайтов
+              {{service.title}}
             </div>
-            <div class="service-card-info-content">
-              В краткие сроки мы создадим качественный и самое главное продающий сайт для продвижения Вашего бизнеса!
-            </div>
+            <div class="service-card-info-content">{{service.description}}</div>
           </div>
           <div class="service-card-action">
-            <div class="service-card-action-price">От 7 500₽</div>
+            <div class="service-card-action-price">От {{service.price}}₽</div>
             <div>
-              <button class="button" (click)="open('order', 'Создание сайтов')">Подробнее</button>
-            </div>
-          </div>
-        </div>
-        <div class="service-card">
-          <img src="../../../assets/images/services/promotion.png" alt="promotion">
-          <div class="card-info">
-            <div class="service-card-info-title">
-              Продвижение
-            </div>
-            <div class="service-card-info-content">
-              Вам нужен качественный SMM-специалист или грамотный таргетолог? Мы готовы оказать Вам услугу “Продвижения”
-              на наивысшем уровне!
-            </div>
-          </div>
-          <div class="service-card-action">
-            <div class="service-card-action-price">От 3 500₽</div>
-            <div>
-              <button class="button" (click)="open('order', 'Продвижение')">Подробнее</button>
-            </div>
-          </div>
-        </div>
-        <div class="service-card">
-          <img src="../../../assets/images/services/img.png" alt="marketing">
-          <div class="card-info">
-            <div class="service-card-info-title">
-              Реклама
-            </div>
-            <div class="service-card-info-content">
-              Без рекламы не может обойтись ни один бизнес или специалист. Обращаясь к нам, мы гарантируем быстрый
-              прирост клиентов за счёт правильно настроенной рекламы.
-            </div>
-          </div>
-          <div class="service-card-action">
-            <div class="service-card-action-price">От 1 000₽</div>
-            <div>
-              <button class="button" (click)="open('order', 'Реклама')">Подробнее</button>
-            </div>
-          </div>
-        </div>
-        <div class="service-card">
-          <img src="../../../assets/images/services/copywriting.png" alt="copywriting">
-          <div class="card-info">
-            <div class="service-card-info-title">
-              Копирайтинг
-            </div>
-            <div class="service-card-info-content">
-              Наши копирайтеры готовы написать Вам любые продающие текста, которые не только обеспечат рост охватов, но
-              и помогут выйти на новый уровень в продажах.
-            </div>
-          </div>
-          <div class="service-card-action">
-            <div class="service-card-action-price">От 750₽</div>
-            <div>
-              <button class="button" (click)="open('order', 'Копирайтинг')">Подробнее</button>
+              <button class="button" (click)="open('order', service.title)">Подробнее</button>
             </div>
           </div>
         </div>
@@ -310,5 +254,5 @@
     </section>
   </div>
 
-  <modal-dialog [type]="type" [selectedPoint]="selectedPoint"></modal-dialog>
+  <modal-dialog [type]="type" [selectedPoint]="selectedPoint" [isOpen]="isDialogOpen" (closed)="isDialogOpen = false"></modal-dialog>
 </main>

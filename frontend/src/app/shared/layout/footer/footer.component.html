@@ -42,7 +42,7 @@
         <div class="contacts-phone-content">
           +7 (499) 343-13-34
         </div>
-        <button class="btn call-me" (click)="open()">Перезвоните мне</button>
+        <button class="btn call-me" (click)="open('consultation')">Перезвоните мне</button>
       </div>
 
       <div class="contacts-email">
@@ -84,50 +84,6 @@
     <div class="right">© 2022. Все права защищены</div>
   </div>
 
-  <div class="modal" *ngIf="requestForCallForm">
-    <div class="modal-form">
-      <div class="icon-close" (click)="close()">
-        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <line x1="1.93562" y1="2.6499" x2="13.9564" y2="14.6707" stroke="#BEBEBE" stroke-linecap="round"/>
-          <line x1="13.9236" y1="2.62971" x2="1.90277" y2="14.6505" stroke="#BEBEBE" stroke-linecap="round"/>
-        </svg>
-      </div>
-      <div class="auth-form">
-        <div class="auth-title">Бесплатная консультация!</div>
-        <div class="auth-inputs">
-          <div class="auth-input">
-            <input type="text" class="input" placeholder="Ваше имя">
-          </div>
-          <div class="auth-input">
-            <input type="password" class="input" placeholder="Ваш номер телефона">
-          </div>
-        </div>
-        <div class="auth-button">
-          <button type="button" class="button" (click)="orderConsultation()">Заказать консультацию</button>
-        </div>
-      </div>
-    </div>
-  </div>
+  <modal-dialog [type]="type" [selectedPoint]="selectedPoint" [isOpen]="isDialogOpen" (closed)="isDialogOpen = false"></modal-dialog>
 
-  <div class="modal" *ngIf="modalDialog">
-    <div class="modal-form">
-      <div class="icon-close" (click)="close()">
-        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <line x1="1.93562" y1="2.6499" x2="13.9564" y2="14.6707" stroke="#BEBEBE" stroke-linecap="round"/>
-          <line x1="13.9236" y1="2.62971" x2="1.90277" y2="14.6505" stroke="#BEBEBE" stroke-linecap="round"/>
-        </svg>
-      </div>
-      <div class="auth-form thank-you">
-        <div class="auth-title">Спасибо за вашу заявку!</div>
-        <div class="auth-inputs">
-          <div class="auth-input-text">
-            Мы свяжемся с вами при первой же возможности.
-          </div>
-        </div>
-        <div class="auth-button">
-          <button type="button" class="button thank-you" (click)="close()">Окей</button>
-        </div>
-      </div>
-    </div>
-  </div>
 </footer>

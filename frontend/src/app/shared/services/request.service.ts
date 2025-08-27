@@ -13,7 +13,7 @@ export class RequestService {
   constructor(private http: HttpClient) { }
 
 
-  request(name: string, phone: string, service: string, type: string): Observable<DefaultResponseType> {
+  requestOrder(name: string, phone: string, service: string, type: string): Observable<DefaultResponseType> {
     return this.http.post<DefaultResponseType>(environment.api + 'requests', {
       name: name,
       phone: phone,
@@ -21,4 +21,14 @@ export class RequestService {
       type: type
     });
   }
+
+  requestConsultation(name: string, phone: string, type: string): Observable<DefaultResponseType> {
+    return this.http.post<DefaultResponseType>(environment.api + 'requests', {
+      name: name,
+      phone: phone,
+      type: type
+    });
+  }
+
+
 }

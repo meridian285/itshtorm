@@ -1,4 +1,4 @@
-<div class="modal" *ngIf="isOpenModal$ | async" [formGroup]="requestForm">
+<div class="modal" *ngIf="isOpen && !thankYouForm" [formGroup]="requestForm">
   <div class="modal-form">
     <div class="icon-close" (click)="close()">
       <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -7,14 +7,15 @@
       </svg>
     </div>
     <div class="auth-form">
-      <div class="auth-title">Заявка на услугу</div>
+      <div class="auth-title" *ngIf="type === 'order'">Заявка на услугу</div>
+      <div class="auth-title" *ngIf="type === 'consultation'">Закажите бесплатную консультацию!</div>
       <div class="auth-inputs">
         <div class="auth-input">
-          <select class="input select" #selectedService>
-            <option value="value1" >Создание сайтов</option>
-            <option value="value2">Продвижение</option>
-            <option value="value3">Реклама</option>
-            <option value="value4">Копирайтинг</option>
+          <select class="input select" *ngIf="type === 'order'" #selectedService formControlName="service">
+            <option value="Создание сайтов" >Создание сайтов</option>
+            <option value="Продвижение">Продвижение</option>
+            <option value="Реклама">Реклама</option>
+            <option value="Копирайтинг">Копирайтинг</option>
           </select>
         </div>
 
@@ -38,7 +39,7 @@
   </div>
 </div>
 
-<div class="modal" *ngIf="thankYouForm">
+<div class="modal" *ngIf="!isOpen && thankYouForm">
   <div class="modal-form">
     <div class="icon-close" (click)="close()">
       <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
