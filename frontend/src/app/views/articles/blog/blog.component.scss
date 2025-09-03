@@ -9,6 +9,105 @@
       @include head-lora-38;
     }
 
+    .blog-head {
+      margin-top: 40px;
+
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      //margin-left: 317px;
+
+      .blog-applied-filters {
+
+        .blog-applied-filter {
+          position: relative;
+          padding: 8px 20px;
+          box-sizing: border-box;
+          border: 1px solid $blue-color;
+          border-radius: 5px;
+          background: $white-color;
+          width: 128px;
+          height: 37px;
+
+          color: rgba(112, 159, 220, 1);
+          font-family: Montserrat, sans-serif;
+          font-size: 16px;
+          font-weight: 400;
+
+          .close {
+            position: absolute;
+            //top: calc(50% - 9px);
+            top: 6px;
+            right: 15px;
+            cursor: pointer;
+          }
+        }
+      }
+
+      .blog-sorting {
+        width: 148px;
+        min-width: 148px;
+        box-sizing: border-box;
+        position: relative;
+        font-size: 16px;
+
+
+        .blog-sorting-head {
+          cursor: pointer;
+          display: flex;
+          align-items: center;
+          padding: 12px 20px 12px 23px;
+          justify-content: space-between;
+          color: $black-text-color;
+
+          span {
+            margin-right: 8px;
+          }
+        }
+
+        .blog-sorting-body {
+          position: absolute;
+          width: 100%;
+          box-sizing: border-box;
+          z-index: 3;
+          display: none;
+          padding: 12px 23px;
+          border-radius: 0 0 5px 5px;
+          background: #F5F5F5;
+          color: #8E8E8E;
+          line-height: 130%;
+
+          .blog-sorting-item {
+            margin-bottom: 14px;
+            cursor: pointer;
+
+            &:last-child {
+              margin-bottom: 0;
+            }
+
+            &.active {
+              color: #313131;
+            }
+          }
+        }
+
+        &.open {
+          width: 257px;
+          min-width: 257px;
+          .blog-sorting-head {
+            color: #000000;
+            border-radius: 5px 5px 0 0;
+            background: $light-blue-color;
+            //padding-right: 23px;
+          }
+
+          .blog-sorting-body {
+            display: block;
+          }
+        }
+      }
+    }
+
     .filter {
       margin-top: 40px;
 
@@ -40,7 +139,8 @@
     .cards {
       margin-top: 40px;
       display: grid;
-      grid-template-columns: 1fr 1fr 1fr 1fr;
+      grid-template-columns: 291px 291px 291px 291px;
+      column-gap: 25px;
       row-gap: 40px;
     }
   }
