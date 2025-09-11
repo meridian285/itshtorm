@@ -9,6 +9,8 @@ import {CategoriesType} from "../../../types/categories.type";
 import {CategoriesService} from "../../../shared/services/categories.service";
 import {ActiveParamsUtil} from "../../../shared/utils/active-params.util";
 import {AppliedFilterType} from "../../../types/applied-filter.type";
+import {CategoryWithCheckedType} from "../../../types/categoryWithChecked.type";
+import {isTemplateDiagnostic} from "@angular/compiler-cli/src/ngtsc/typecheck/diagnostics";
 
 @Component({
   selector: 'app-blog',
@@ -21,11 +23,11 @@ export class BlogComponent implements OnInit {
   sortingOpen = false;
   categories: CategoriesType[] | null = null;
   activeParams: ActiveParamsType = {categories: []};
-  appliedFilters: AppliedFilterType[] = [];
+  // appliedFilters: AppliedFilterType[] = [];
 
   pages: number[] = [];
 
-  sortingOptions: CategoriesType[] = [];
+  sortingOptions: CategoryWithCheckedType[] = [];
 
   constructor(private articlesService: ArticlesService,
               private router: Router,
@@ -35,28 +37,18 @@ export class BlogComponent implements OnInit {
 
   ngOnInit(): void {
     this.categoriesService.getCategories()
-      .subscribe((data: CategoriesType[] | DefaultResponseType) => {
+      .subscribe((data: CategoryWithCheckedType[] | DefaultResponseType) => {
         if ((data as DefaultResponseType).error !== undefined) {
           const error = (data as DefaultResponseType).message;
           throw new Error(error);
         }
-        this.sortingOptions = data as CategoriesType[];
+
+        this.sortingOptions = data as CategoryWithCheckedType[];
       });
 
-    this.activatedRouter.queryParams.subscribe(params => {
+    this.activatedRouter.queryParams
+      .subscribe(params => {
       this.activeParams = ActiveParamsUtil.processParams(params);
-
-      this.appliedFilters = [];
-      this.activeParams.categories?.forEach(url => {
-
-        const foundType = this.sortingOptions.find(category => category.url === url);
-        if (foundType) {
-          this.appliedFilters.push({
-            name: foundType.name,
-            urlParam: foundType.url,
-          });
-        }
-      })
 
       this.articlesService.getArticles(this.activeParams)
         .subscribe((data: ArticlesWithFilterType | DefaultResponseType) => {
@@ -83,24 +75,47 @@ export class BlogComponent implements OnInit {
 
   sort(value: string) {
     this.activeParams.categories = [value];
+    this.categoriesService.getCategories()
+      .subscribe(data => {
+      this.sortingOptions = data as CategoryWithCheckedType[];
+
+       this.sortingOptions.map(item => {
+         if (item.url === value) {
+           item.activeFilter = !item.activeFilter
+         }
+       });
+
+    })
 
     this.router.navigate(['/articles'], {
       queryParams: this.activeParams
     });
+
+
   }
 
   updateFilterParam(url: string, value: boolean) {
-
-    if(this.activeParams.categories && this.activeParams.categories.length > 0) {
-      const existingTypeInParams = this.activeParams.categories.find(item => item === url);
-      if (existingTypeInParams && !value) {
-        this.activeParams.categories = this.activeParams.categories.filter(item => item !== url);
-      } else if (!existingTypeInParams && value) {
-        this.activeParams.categories.push(url);
+    this.sortingOptions.map(item => {
+      if (item.url === url) {
+        item.activeFilter = value
       }
-    } else if (value) {
-      this.activeParams.categories = [url];
-    }
+    });
+
+      if(this.activeParams.categories && this.activeParams.categories.length > 0) {
+
+        const existingTypeInParams = this.activeParams.categories.find(item => item === url);
+
+        if (existingTypeInParams && !value) {
+          this.activeParams.categories = this.activeParams.categories.filter(item => item !== url);
+
+        } else if (!existingTypeInParams && value) {
+
+          this.activeParams.categories = [...this.activeParams.categories, url];
+        }
+      } else if (value) {
+        this.activeParams.categories = [url];
+      }
+
 
 
     this.router.navigate(['/articles'], {

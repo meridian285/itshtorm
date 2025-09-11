@@ -6,7 +6,6 @@ import { ArticleCardComponent } from './components/article-card/article-card.com
 import { ModalDialogComponent } from './components/modal-dialog/modal-dialog.component';
 import {CommentComponent} from "./components/comment/comment.component";
 import {MatSelectModule} from "@angular/material/select";
-import {FilterItemComponent} from "./components/filter-item/filter-item.component";
 
 
 
@@ -16,13 +15,11 @@ import {FilterItemComponent} from "./components/filter-item/filter-item.componen
         ModalDialogComponent,
         CommentComponent,
         CommentComponent,
-        FilterItemComponent
     ],
     exports: [
         ArticleCardComponent,
         CommentComponent,
         ModalDialogComponent,
-        FilterItemComponent
     ],
   imports: [
     RouterModule,
