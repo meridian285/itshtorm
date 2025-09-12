@@ -6,7 +6,7 @@
       <div class="blog-applied-filters">
         <div class="blog-applied-filter" *ngFor="let appliedFilter of appliedFilters">
           <span>{{appliedFilter.name}}</span>
-          <i class="close" (click)="removeAppliedFilter(appliedFilter)">
+          <i class="close" (click)="updateFilterParam(appliedFilter.urlParam, false)">
             <svg width="16" height="17" viewBox="0 0 16 17" fill="none" xmlns="http://www.w3.org/2000/svg">
               <g clip-path="url(#clip0_19075_586)">
                 <line x1="1.93553" y1="3.15002" x2="13.9563" y2="15.1708" stroke="#709FDC" stroke-linecap="round"/>

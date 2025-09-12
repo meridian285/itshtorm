@@ -10,8 +10,6 @@ import {CategoriesService} from "../../../shared/services/categories.service";
 import {ActiveParamsUtil} from "../../../shared/utils/active-params.util";
 import {AppliedFilterType} from "../../../types/applied-filter.type";
 import {CategoryWithCheckedType} from "../../../types/categoryWithChecked.type";
-import {isTemplateDiagnostic} from "@angular/compiler-cli/src/ngtsc/typecheck/diagnostics";
-import * as trace_events from "trace_events";
 
 @Component({
   selector: 'app-blog',
@@ -37,49 +35,6 @@ export class BlogComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.activatedRouter.queryParams
-      .subscribe(params => {
-
-        this.activeParams = ActiveParamsUtil.processParams(params);
-
-        this.appliedFilters = [];
-        this.activeParams.categories.forEach(url => {
-          this.sortingOptions.forEach(item => {
-            if (item.url === url) {
-              this.appliedFilters.push({
-                urlParam: item.url,
-                name: item.name
-              })
-            }
-          })
-        });
-
-        this.sortingOptions.map(item => {
-          if (this.activeParams.categories.includes(item.url)) {
-            item.activeFilter = true;
-          }
-        })
-
-        this.articlesService.getArticles(this.activeParams)
-          .subscribe((data: ArticlesWithFilterType | DefaultResponseType) => {
-
-            // this.pages = [];
-            // for (let i = 1; i <= data.pages; i++) {
-            //   this.pages.push(i);
-            // }
-
-            if ((data as DefaultResponseType).error !== undefined) {
-              const error = (data as DefaultResponseType).message;
-              throw new Error(error);
-            }
-            const items = data as ArticlesWithFilterType;
-
-            this.articles = items.items as ArticlesType[];
-
-          })
-      })
-
-
     this.categoriesService.getCategories()
       .subscribe((data: CategoryWithCheckedType[] | DefaultResponseType) => {
         if ((data as DefaultResponseType).error !== undefined) {
@@ -95,17 +50,47 @@ export class BlogComponent implements OnInit {
           }
         })
 
-        this.appliedFilters = [];
-        this.activeParams.categories.forEach(url => {
-          this.sortingOptions.forEach(item => {
-            if (item.url === url) {
-              this.appliedFilters.push({
-                urlParam: item.url,
-                name: item.name
+        this.activatedRouter.queryParams
+          .subscribe(params => {
+
+            this.activeParams = ActiveParamsUtil.processParams(params);
+
+            this.appliedFilters = [];
+            this.activeParams.categories.forEach(url => {
+              this.sortingOptions.forEach(item => {
+                if (item.url === url) {
+                  this.appliedFilters.push({
+                    urlParam: item.url,
+                    name: item.name
+                  })
+                }
               })
-            }
+            });
+
+            this.sortingOptions.map(item => {
+              if (this.activeParams.categories.includes(item.url)) {
+                item.activeFilter = true;
+              }
+            })
+
+            this.articlesService.getArticles(this.activeParams)
+              .subscribe((data: ArticlesWithFilterType | DefaultResponseType) => {
+
+                // this.pages = [];
+                // for (let i = 1; i <= data.pages; i++) {
+                //   this.pages.push(i);
+                // }
+
+                if ((data as DefaultResponseType).error !== undefined) {
+                  const error = (data as DefaultResponseType).message;
+                  throw new Error(error);
+                }
+                const items = data as ArticlesWithFilterType;
+
+                this.articles = items.items as ArticlesType[];
+
+              })
           })
-        });
       });
   }
 
@@ -139,19 +124,5 @@ export class BlogComponent implements OnInit {
     this.router.navigate(['/articles'], {
       queryParams: this.activeParams
     });
-  }
-
-  removeAppliedFilter(appliedFilter: AppliedFilterType) {
-    console.log(appliedFilter)
-    console.log('this.activeParams', this.activeParams);
-    console.log('this.sortingOptions', this.sortingOptions);
-
-    this.activeParams.categories = this.activeParams.categories.filter(item => item !== appliedFilter.urlParam);
-
-    this.sortingOptions.map(item => {
-      if (item.url === appliedFilter.urlParam) {
-        item.activeFilter = false;
-      }
-    })
   }
 }
