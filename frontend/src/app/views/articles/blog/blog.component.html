@@ -4,8 +4,8 @@
 
     <div class="blog-head">
       <div class="blog-applied-filters">
-        <div class="blog-applied-filter">
-          <span>Дизайн</span>
+        <div class="blog-applied-filter" *ngFor="let sortingOption of sortingOptions">
+          <span>{{sortingOption.name}}</span>
           <i class="close">
             <svg width="16" height="17" viewBox="0 0 16 17" fill="none" xmlns="http://www.w3.org/2000/svg">
               <g clip-path="url(#clip0_19075_586)">

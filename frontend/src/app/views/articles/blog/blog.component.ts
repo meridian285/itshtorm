@@ -11,6 +11,7 @@ import {ActiveParamsUtil} from "../../../shared/utils/active-params.util";
 import {AppliedFilterType} from "../../../types/applied-filter.type";
 import {CategoryWithCheckedType} from "../../../types/categoryWithChecked.type";
 import {isTemplateDiagnostic} from "@angular/compiler-cli/src/ngtsc/typecheck/diagnostics";
+import * as trace_events from "trace_events";
 
 @Component({
   selector: 'app-blog',
@@ -23,7 +24,7 @@ export class BlogComponent implements OnInit {
   sortingOpen = false;
   categories: CategoriesType[] | null = null;
   activeParams: ActiveParamsType = {categories: []};
-  // appliedFilters: AppliedFilterType[] = [];
+  appliedFilters: AppliedFilterType[] = [];
 
   pages: number[] = [];
 
@@ -36,6 +37,39 @@ export class BlogComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.activatedRouter.queryParams
+      .subscribe(params => {
+
+        this.activeParams = ActiveParamsUtil.processParams(params);
+
+        console.log('this.activeParams', this.activeParams);
+
+        this.sortingOptions.map(item => {
+          if (this.activeParams.categories.includes(item.url)) {
+            item.activeFilter = true;
+          }
+        })
+
+        this.articlesService.getArticles(this.activeParams)
+          .subscribe((data: ArticlesWithFilterType | DefaultResponseType) => {
+
+            // this.pages = [];
+            // for (let i = 1; i <= data.pages; i++) {
+            //   this.pages.push(i);
+            // }
+
+            if ((data as DefaultResponseType).error !== undefined) {
+              const error = (data as DefaultResponseType).message;
+              throw new Error(error);
+            }
+            const items = data as ArticlesWithFilterType;
+
+            this.articles = items.items as ArticlesType[];
+
+          })
+      })
+
+
     this.categoriesService.getCategories()
       .subscribe((data: CategoryWithCheckedType[] | DefaultResponseType) => {
         if ((data as DefaultResponseType).error !== undefined) {
@@ -44,54 +78,17 @@ export class BlogComponent implements OnInit {
         }
 
         this.sortingOptions = data as CategoryWithCheckedType[];
-      });
 
-    this.activatedRouter.queryParams
-      .subscribe(params => {
-      this.activeParams = ActiveParamsUtil.processParams(params);
-
-      this.articlesService.getArticles(this.activeParams)
-        .subscribe((data: ArticlesWithFilterType | DefaultResponseType) => {
-          // this.pages = [];
-          // for (let i = 1; i <= data.pages; i++) {
-          //   this.pages.push(i);
-          // }
-          if ((data as DefaultResponseType).error !== undefined) {
-            const error = (data as DefaultResponseType).message;
-            throw new Error(error);
+        this.sortingOptions.map(item => {
+          if (this.activeParams.categories.includes(item.url)) {
+            item.activeFilter = true;
           }
-          const items = data as ArticlesWithFilterType;
-
-          this.articles = items.items as ArticlesType[];
-
         })
-    })
-
+      });
   }
 
   toggleSorting(value: boolean) {
     this.sortingOpen = value;
-  }
-
-  sort(value: string) {
-    this.activeParams.categories = [value];
-    this.categoriesService.getCategories()
-      .subscribe(data => {
-      this.sortingOptions = data as CategoryWithCheckedType[];
-
-       this.sortingOptions.map(item => {
-         if (item.url === value) {
-           item.activeFilter = !item.activeFilter
-         }
-       });
-
-    })
-
-    this.router.navigate(['/articles'], {
-      queryParams: this.activeParams
-    });
-
-
   }
 
   updateFilterParam(url: string, value: boolean) {
