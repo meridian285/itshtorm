@@ -1,0 +1,79 @@
+@import "../../../../assets/styles/variables";
+@import "../../../../assets/styles/mixins";
+@import "../../../../assets/styles/global";
+@import "../../../../assets/styles/auth-form";
+
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0,0,0,0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+
+  .modal-form {
+    position: relative;
+    width: 722px;
+    height: 489px;
+    border-radius: 10px;
+    border: 1.5px solid $blue-color;
+    background: $white-color;
+
+    .icon-close {
+      position: absolute;
+      top: 30px;
+      right: 30px;
+      cursor: pointer;
+    }
+
+    .auth-form {
+      padding: 95px 149px;
+
+      .auth-title {
+        width: 422px;
+        text-align: center;
+        line-height: 130%;
+        margin-bottom: 20px;
+      }
+
+      .auth-inputs {
+        margin-bottom: 20px;
+
+        .auth-input {
+
+          .select {
+            width: 100%;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+          }
+        }
+      }
+
+      .auth-button {
+        margin-top: 0;
+
+        .button {
+          cursor: pointer;
+        }
+
+        .button.thank-you {
+          margin-top: 20px;
+          width: 73px;
+          font-size: 12px;
+          padding: 10px 20px;
+        }
+      }
+    }
+    .auth-form.thank-you {
+      padding: 163px 142px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+  }
+}

@@ -1,0 +1,82 @@
+@import "../../../../assets/styles/variables";
+
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background-color: $white-color;
+  padding: 40px 0 40px 0;
+
+  .container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    .logo {
+
+    }
+
+    .header-menu {
+      width: 429px;
+      margin-left: 100px;
+
+      ul {
+        display: flex;
+        justify-content: space-between;
+        padding: 0;
+        margin: 0;
+        list-style: none;
+
+        li {
+          a {
+            color: $black-text-color;
+            font-family: Montserrat, sans-serif;
+            font-size: 16px;
+            font-weight: 500;
+            text-decoration: none;
+          }
+
+          a.active {
+            color: $blue-color;
+          }
+
+        }
+      }
+    }
+
+    .header-phone {
+      margin-left: 257px;
+      a {
+        text-decoration: none;
+        color: $blue-color;
+        font-family: Montserrat, sans-serif;
+        font-size: 16px;
+        font-weight: 500;
+        vertical-align: center;
+      }
+    }
+
+    .action {
+      margin-left: 50px;
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+
+      .login {
+        margin-left: 7px;
+        color: $black-text-color;
+        font-family: Montserrat, sans-serif;
+        font-size: 16px;
+        font-weight: 500;
+      }
+
+      .loggedIn {
+        margin-left: 7px;
+        color: $black-text-color;
+        font-family: Montserrat, sans-serif;
+        font-size: 16px;
+        font-weight: 500;
+      }
+    }
+  }
+}

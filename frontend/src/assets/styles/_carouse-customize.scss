@@ -1,0 +1,20 @@
+.carousel-control-prev, .carousel-control-next {
+  width: 4%;
+}
+
+.carousel-indicators {
+  & [data-bs-target] {
+    border-radius: 50%;
+    border: solid 1px $white-color;
+    width: 10px;
+    height: 10px;
+    margin-right: 10px;
+    margin-left: 10px;
+    background-color: transparent;
+    opacity: 1;
+  }
+
+  .active {
+    background-color: $white-color;
+  }
+}
