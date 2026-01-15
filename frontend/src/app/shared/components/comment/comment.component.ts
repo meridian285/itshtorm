@@ -1,6 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {CommentType} from "../../../types/comment.type";
-import {ArticlesType} from "../../../types/articles.type";
 
 @Component({
   selector: 'comment',
@@ -14,6 +13,7 @@ export class CommentComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
+
   }
 
 }

@@ -10,6 +10,8 @@ import {CategoriesService} from "../../../shared/services/categories.service";
 import {ActiveParamsUtil} from "../../../shared/utils/active-params.util";
 import {AppliedFilterType} from "../../../types/applied-filter.type";
 import {CategoryWithCheckedType} from "../../../types/categoryWithChecked.type";
+import {map} from "rxjs";
+import {HttpParams} from "@angular/common/http";
 
 @Component({
   selector: 'app-blog',
@@ -23,7 +25,6 @@ export class BlogComponent implements OnInit {
   categories: CategoriesType[] | null = null;
   activeParams: ActiveParamsType = {categories: []};
   appliedFilters: AppliedFilterType[] = [];
-
   pages: number[] = [];
 
   sortingOptions: CategoryWithCheckedType[] = [];
@@ -36,6 +37,12 @@ export class BlogComponent implements OnInit {
 
   ngOnInit(): void {
     this.categoriesService.getCategories()
+      .pipe(
+        map(categories => categories.map(category => ({
+          ...category,
+          activeFilter: false
+        })))
+      )
       .subscribe((data: CategoryWithCheckedType[] | DefaultResponseType) => {
         if ((data as DefaultResponseType).error !== undefined) {
           const error = (data as DefaultResponseType).message;
@@ -76,10 +83,9 @@ export class BlogComponent implements OnInit {
             this.articlesService.getArticles(this.activeParams)
               .subscribe((data: ArticlesWithFilterType | DefaultResponseType) => {
 
-                // this.pages = [];
-                // for (let i = 1; i <= data.pages; i++) {
-                //   this.pages.push(i);
-                // }
+                console.log(this.activeParams)
+
+
 
                 if ((data as DefaultResponseType).error !== undefined) {
                   const error = (data as DefaultResponseType).message;
@@ -89,9 +95,15 @@ export class BlogComponent implements OnInit {
 
                 this.articles = items.items as ArticlesType[];
 
+                this.pages = [];
+                for (let i = 1; i <= items.pages; i++) {
+                  this.pages.push(i);
+                }
+
               })
           })
       });
+
   }
 
   toggleSorting(value: boolean) {
@@ -101,7 +113,7 @@ export class BlogComponent implements OnInit {
   updateFilterParam(url: string, value: boolean) {
     this.sortingOptions.map(item => {
       if (item.url === url) {
-        item.activeFilter = value
+        item.activeFilter = value;
       }
     });
 
@@ -115,14 +127,76 @@ export class BlogComponent implements OnInit {
       } else if (!existingTypeInParams && value) {
 
         this.activeParams.categories = [...this.activeParams.categories, url];
+
       }
     } else if (value) {
       this.activeParams.categories = [url];
     }
 
 
+
+
+
+    // let params = '';
+    //
+    // params = this.activeParams.categories.join('+')
+    // const encodedValue = encodeURIComponent(params);
+
+    // console.log(encodedValue)
+
+    // this.router.navigate(['/articles'], {
+    //   queryParams: {categories: encodedValue}
+    // });
+
+    this.activeParams.page = 1;
+
     this.router.navigate(['/articles'], {
       queryParams: this.activeParams
     });
+
+
+    // this.activatedRouter.queryParams.subscribe(queryParams => {
+    //   console.log('queryParams', queryParams)
+    //   const params1 = new URLSearchParams(queryParams);
+    //   console.log('params1', params1)
+    // })
+
+    // const url1 = new URL("https://example.com?items1=apple,banana,orange");
+    //
+    // const params1 = new URLSearchParams(url1.search);
+    //
+    // console.log('params1', params1)
+    //
+    // const itemsString = params1.get("items");
+    // const itemsArray = itemsString ? itemsString.split(',') : [];
+    // console.log(itemsArray); // Output: ["apple", "banana", "orange"]
+  }
+
+  openPage(page: number) {
+    this.activeParams.page = page;
+
+    this.router.navigate(['/articles'], {
+      queryParams: this.activeParams
+    });
+  }
+
+  openPrevPage() {
+    if (this.activeParams.page && this.activeParams.page > 1) {
+      this.activeParams.page--;
+
+      this.router.navigate(['/articles'], {
+        queryParams: this.activeParams
+      });
+    }
+  }
+
+  openNextPage() {
+    if (this.activeParams.page && this.activeParams.page < this.pages.length) {
+      this.activeParams.page++;
+
+      this.router.navigate(['/articles'], {
+        queryParams: this.activeParams
+      });
+    }
   }
 }

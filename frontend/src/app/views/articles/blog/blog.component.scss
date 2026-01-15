@@ -147,5 +147,53 @@
       column-gap: 25px;
       row-gap: 40px;
     }
+
+    .pagination {
+      margin-top: 70px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      .pagination-arrow {
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        &.disabled {
+          cursor: auto;
+
+        }
+      }
+
+      .pagination-pages {
+        .pagination-page {
+          font-size: 20px;
+          padding-left: 10px;
+          padding-right: 10px;
+          margin-left: 10px;
+          margin-right: 10px;
+
+          text-decoration: none;
+          font-weight: 400;
+          line-height: 130%;
+          color: $black-text-color;
+          cursor: pointer;
+        }
+
+        .active {
+          color: $light-blue-color;
+          //cursor: ;
+        }
+      }
+
+      .pagination-arrow-left {
+        margin-right: 40px;
+      }
+
+      .pagination-arrow-right {
+        margin-left: 40px;
+      }
+    }
   }
 }

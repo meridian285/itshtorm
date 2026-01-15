@@ -16,22 +16,7 @@ export class CategoriesService {
               private authService: AuthService) {
   }
 
-  // getCategories(): Observable<CategoriesType[] | DefaultResponseType> {
-  //   return this.http.get<CategoriesType[] | DefaultResponseType>(environment.api + 'categories');
-  // }
-
   getCategories(): Observable<CategoryWithCheckedType[]> {
     return this.http.get<CategoryWithCheckedType[]>(environment.api + 'categories')
-      .pipe(
-        map((items: CategoryWithCheckedType[]) => {
-
-          items.map(item => {
-            item.activeFilter = false;
-          })
-
-          return items;
-        })
-
-      );
   }
 }

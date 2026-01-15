@@ -13,7 +13,7 @@
             <a routerLink="/" fragment="advantages"  [class.active]="selectedMenu === 'about-us'" (click)="onMenuItemClick('about-us')">О нас</a>
           </li>
           <li>
-            <a routerLink="/articles" [class.active]="selectedMenu === 'articles'" (click)="onMenuItemClick('articles')">Статьи</a>
+            <a [routerLink]="['/articles']" [queryParams]="{page: 1}" [class.active]="selectedMenu === 'articles'" (click)="onMenuItemClick('articles')">Статьи</a>
           </li>
           <li>
             <a routerLink="/" fragment="reviews" [class.active]="selectedMenu === 'reviews'" (click)="onMenuItemClick('reviews')">Отзывы</a>
@@ -44,8 +44,8 @@
           stroke="#071739" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
       </svg>
 
-      <span class="login" routerLink="/login" *ngIf="!isLogged">Войти</span>
-      <span class="loggedIn" *ngIf="isLogged" [matMenuTriggerFor]="menu">Привет, {{userInfo?.name}}!</span>
+      <span class="login text" routerLink="/login" *ngIf="!isLogged">Войти</span>
+      <span class="loggedIn text" *ngIf="isLogged" [matMenuTriggerFor]="menu">Привет, {{userInfo?.name}}!</span>
 
       <mat-menu #menu="matMenu">
         <button mat-menu-item (click)="logout()">

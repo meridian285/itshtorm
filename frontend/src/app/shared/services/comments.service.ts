@@ -24,6 +24,4 @@ export class CommentsService {
       article: articleId,
     });
   }
-
-
 }
