@@ -10,6 +10,8 @@ import {CommentsType} from "../../../types/comments.type";
 import {CommentType} from "../../../types/comment.type";
 import {CommentsParamsType} from "../../../types/commentsParams.type";
 import {CurrentUrlType} from "../../../shared/current-url.type";
+import {MatSnackBar} from "@angular/material/snack-bar";
+import {CommentActionType} from "../../../types/comment-action.type";
 
 @Component({
   selector: 'app-article',
@@ -18,37 +20,34 @@ import {CurrentUrlType} from "../../../shared/current-url.type";
 })
 export class ArticleComponent implements OnInit {
 
-  commentText:string = '';
+  commentText: string = '';
   comments: CommentType[] = [];
-  commentsCount = 0;
+  commentsAllCount: number = 0
   currentUrl: CurrentUrlType = {url: ''};
-  commentsParams: CommentsParamsType = {comments: 5};
-  commentsCountQueryParams: CommentsParamsType;
+  commentsCountQueryParams: CommentsParamsType = {comments: 0};
   totalCommentsCountFromBack: number = 0;
-  totalComments = 0;
-  offset = 0;
   loggedIn: boolean = false;
+  commentsReaction: CommentActionType = [];
   // loggedIn$: Observable<boolean> = this.authService.isLogged$;
 
   @ViewChild('articleText') articleText: ElementRef | null = null;
 
-  article: ArticleType | null = null;
+  article: ArticleType | null | undefined = null;
   relatedArticles: ArticlesType[] | null = null;
 
   constructor(private articlesService: ArticlesService,
               private authService: AuthService,
               private router: Router,
+              private _snackBar: MatSnackBar,
               private activeRouter: ActivatedRoute,
               private commentsService: CommentsService) {
 
-    this.commentsCountQueryParams = {comments: 5}
     this.loggedIn = this.authService.getIsLoggedIn();
   }
 
   ngOnInit(): void {
     this.activeRouter.params
       .subscribe(params => {
-        console.log('params', params)
 
         this.currentUrl = params as CurrentUrlType;
 
@@ -65,8 +64,6 @@ export class ArticleComponent implements OnInit {
 
             this.totalCommentsCountFromBack = this.article.commentsCount;
 
-            console.log('this.article', this.article);
-
             if (this.articleText) {
               this.articleText.nativeElement.innerHTML = this.article.text;
             }
@@ -74,28 +71,51 @@ export class ArticleComponent implements OnInit {
             // подписка на изменение (queryParams comment) нужное количество комментариев для отображения на странице
             this.activeRouter.queryParams
               .subscribe(data => {
-              this.commentsCountQueryParams = data as CommentsParamsType;
+                this.commentsCountQueryParams = data as CommentsParamsType;
 
-            })
+                let commentsCountQueryParams = +this.commentsCountQueryParams.comments
 
-            let commentsCountQueryParams = +this.commentsCountQueryParams.comments
-
-            if (this.totalCommentsCountFromBack < commentsCountQueryParams) {
-              commentsCountQueryParams = +this.totalCommentsCountFromBack;
-            }
-
-            // получить комментарии для статьи
-            this.commentsService.getComments(this.totalCommentsCountFromBack - commentsCountQueryParams, this.article.id)
-              .subscribe((data: DefaultResponseType | CommentsType) => {
-                if ((data as DefaultResponseType).error !== undefined) {
-                  const error = (data as DefaultResponseType).message;
-                  throw new Error(error);
+                if (this.totalCommentsCountFromBack < commentsCountQueryParams) {
+                  commentsCountQueryParams = +this.totalCommentsCountFromBack;
                 }
 
-                const commentsData = data as CommentsType;
-                this.comments = commentsData.comments;
-                this.commentsCount = commentsData.allCount;
+                // получить комментарии для статьи
+                if (this.article) {
+                  const article = this.article
+                  this.commentsService.getComments(this.totalCommentsCountFromBack - commentsCountQueryParams, article.id)
+                    .subscribe((data: DefaultResponseType | CommentsType) => {
+                      if ((data as DefaultResponseType).error !== undefined) {
+                        const error = (data as DefaultResponseType).message;
+                        throw new Error(error);
+                      }
 
+                      const commentsData = data as CommentsType;
+
+                      this.commentsService.getArticleCommentActionsForUser(article.id)
+                        .subscribe(data => {
+                          if ((data as DefaultResponseType).error !== undefined) {
+                            const error = (data as DefaultResponseType).message;
+                            throw new Error(error);
+                          }
+
+                          this.commentsReaction = data as CommentActionType;
+
+                          if (this.commentsReaction.length > 0) {
+                            commentsData.comments.forEach(comment => {
+                              this.commentsReaction.forEach(item => {
+                                if (comment.id === item.comment) {
+                                  comment.user.reaction = item.action
+                                }
+                              })
+                            })
+                          }
+                        })
+
+                      this.comments = commentsData.comments;
+                      this.commentsAllCount = commentsData.allCount;
+
+                    })
+                }
               })
           });
       })
@@ -117,19 +137,20 @@ export class ArticleComponent implements OnInit {
       this.commentsService.addComment(this.commentText, this.article.id)
         .subscribe(data => {
           if ((data as DefaultResponseType).error !== undefined) {
-            const error = (data as DefaultResponseType).message;
-            throw new Error(error);
-          }
+            const message = (data as DefaultResponseType).message;
 
-          console.log('data', data);
+            this._snackBar.open(message);
+            this.commentText = "";
+
+            throw new Error(message);
+          }
 
         })
     }
   }
 
   moreComments() {
-    this.commentsParams.comments = this.commentsParams.comments + 1;
-    this.commentsCountQueryParams = {comments: this.commentsParams.comments}
+    this.commentsCountQueryParams = {comments: +this.commentsCountQueryParams.comments + 10};
 
     this.router.navigate([`/articles/${this.currentUrl.url}`], {
       queryParams: this.commentsCountQueryParams

@@ -1,3 +1,5 @@
+import {Reactions} from "../shared/enums/reactions";
+
 export type CommentType = {
   id: string,
   text: string,
@@ -6,6 +8,7 @@ export type CommentType = {
   dislikesCount: number,
   user: {
     id: string,
-    name: string
+    name: string,
+    reaction?: string
   }
 }

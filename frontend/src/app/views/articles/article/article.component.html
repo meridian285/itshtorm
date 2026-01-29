@@ -65,19 +65,19 @@
             Чтобы оставлять комментарии, <span routerLink="/login">войдите</span> или <span routerLink="/signup">зарегистрируйтесь</span>.
           </div>
 
-          <div class="write-comment" *ngIf="!loggedIn && comments.length < 1">Будьте первым, кто оставит свой комментарий к статье!</div>
+          <div class="write-comment" *ngIf="!loggedIn && commentsAllCount < 1">Будьте первым, кто оставит свой комментарий к статье!</div>
 
           <div class="create-comment" *ngIf="loggedIn">
             <textarea placeholder="Напишите Ваш комментарий к статье..."
                       cols="114" rows="10" spellcheck="true" wrap="soft" [(ngModel)]="commentText"></textarea>
-            <button type="button" class="button btn-comment" (click)="addComment()">Опубликовать комментарий</button>
+            <button type="button" class="button btn-comment"(click)="addComment()">Опубликовать комментарий</button>
           </div>
 
           <div class="comments">
 
               <comment [comment]="comment" *ngFor="let comment of comments"></comment>
 
-            <div class="more-comments" *ngIf="totalCommentsCountFromBack >= +commentsCountQueryParams.comments" (click)="moreComments()">
+            <div class="more-comments"  *ngIf="totalCommentsCountFromBack > +commentsCountQueryParams.comments" (click)="moreComments()">
               Загрузить ещё комментарии
               <i>
                 <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
