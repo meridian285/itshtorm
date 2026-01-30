@@ -65,7 +65,7 @@
             Чтобы оставлять комментарии, <span routerLink="/login">войдите</span> или <span routerLink="/signup">зарегистрируйтесь</span>.
           </div>
 
-          <div class="write-comment" *ngIf="!loggedIn && commentsAllCount < 1">Будьте первым, кто оставит свой комментарий к статье!</div>
+          <div class="write-comment" *ngIf="loggedIn && commentsAllCount < 1">Будьте первым, кто оставит свой комментарий к статье!</div>
 
           <div class="create-comment" *ngIf="loggedIn">
             <textarea placeholder="Напишите Ваш комментарий к статье..."

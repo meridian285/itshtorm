@@ -103,7 +103,6 @@
 
           .write-comment {
             margin-top: 20px;
-            margin-bottom: 40px;
             color: $black-text-color;
             font-family: Montserrat, sans-serif;
             font-size: 14px;
@@ -111,6 +110,7 @@
           }
 
           .create-comment {
+            margin-top: 40px;
             textarea {
               padding: 20px;
               resize: none;
