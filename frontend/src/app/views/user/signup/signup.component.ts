@@ -14,6 +14,9 @@ import {Route, Router} from "@angular/router";
 })
 export class SignupComponent implements OnInit {
 
+  isChecked: boolean = false;
+  errorInfo: {errorMessage: string, incorrectData: boolean} = {errorMessage: '', incorrectData: false}
+
   signupForm = this.fb.group({
     name: ['', [Validators.required, Validators.pattern(/^([а-яА-Я]{2,}\s[а-яА-Я]{1,}'?-?[а-яА-Я]{2,}\s?([а-яА-Я]{1,})?)/)]],
     email: ['', [Validators.email, Validators.required]],
@@ -29,11 +32,10 @@ export class SignupComponent implements OnInit {
   }
 
   ngOnInit(): void {
+
   }
 
-  signup() {
-    console.log(this.signupForm.value);
-    console.log(this.signupForm.valid);
+  signup(): void {
     if (this.signupForm.valid && this.signupForm.value.name && this.signupForm.value.email
       && this.signupForm.value.password && this.signupForm.value.agree) {
       this.authService.signup(this.signupForm.value.name, this.signupForm.value.email, this.signupForm.value.password)
@@ -42,7 +44,6 @@ export class SignupComponent implements OnInit {
             let error = null;
             if ((data as DefaultResponseType).error !== undefined) {
               error = (data as DefaultResponseType).message
-
             }
 
             const loginResponse: LoginResponseType =(data as LoginResponseType);
@@ -58,6 +59,7 @@ export class SignupComponent implements OnInit {
             this.authService.setTokens(loginResponse.accessToken, loginResponse.refreshToken);
             this.authService.userId = loginResponse.userId;
             this._snackBar.open('Вы успешно зарегистрировались');
+            this.errorInfo.incorrectData = false;
             this.router.navigate(['/']);
           },
           error: (errorResponse: HttpErrorResponse) => {
@@ -70,4 +72,20 @@ export class SignupComponent implements OnInit {
         })
     }
   }
+
+  get name() {
+    return this.signupForm.get('name');
+  }
+
+  get email() {
+    return this.signupForm.get('email');
+  }
+
+  get password() {
+    return this.signupForm.get('password');
+  }
+  get agree() {
+    return this.signupForm.get('agree');
+  }
+
 }

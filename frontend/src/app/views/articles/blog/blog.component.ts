@@ -106,11 +106,11 @@ export class BlogComponent implements OnInit {
 
   }
 
-  toggleSorting(value: boolean) {
+  toggleSorting(value: boolean): void {
     this.sortingOpen = value;
   }
 
-  updateFilterParam(url: string, value: boolean) {
+  updateFilterParam(url: string, value: boolean): void {
     this.sortingOptions.map(item => {
       if (item.url === url) {
         item.activeFilter = value;
@@ -172,7 +172,7 @@ export class BlogComponent implements OnInit {
     // console.log(itemsArray); // Output: ["apple", "banana", "orange"]
   }
 
-  openPage(page: number) {
+  openPage(page: number): void {
     this.activeParams.page = page;
 
     this.router.navigate(['/articles'], {
@@ -180,7 +180,7 @@ export class BlogComponent implements OnInit {
     });
   }
 
-  openPrevPage() {
+  openPrevPage(): void {
     if (this.activeParams.page && this.activeParams.page > 1) {
       this.activeParams.page--;
 
@@ -190,7 +190,7 @@ export class BlogComponent implements OnInit {
     }
   }
 
-  openNextPage() {
+  openNextPage(): void {
     if (this.activeParams.page && this.activeParams.page < this.pages.length) {
       this.activeParams.page++;
 

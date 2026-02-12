@@ -6,7 +6,6 @@ import {AuthService} from "../../../core/auth/auth.service";
 import {LoginResponseType} from "../../../types/login-response.type";
 import {DefaultResponseType} from "../../../types/default-response.type";
 import {HttpErrorResponse} from "@angular/common/http";
-import {UserInfoType} from "../../../types/user-info.type";
 import {UserService} from "../../../shared/services/user.service";
 
 @Component({
@@ -15,6 +14,9 @@ import {UserService} from "../../../shared/services/user.service";
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent implements OnInit {
+
+  incorrect: boolean = true;
+  errorMessage: string = '';
 
   loginForm = this.fb.group({
     email: ['', [Validators.email, Validators.required]],
@@ -33,8 +35,8 @@ export class LoginComponent implements OnInit {
   }
 
 
-  login() {
-    if (this.loginForm && this.loginForm.value.email && this.loginForm.value.password) {
+  login(): void {
+    if (this.loginForm.valid && this.loginForm.value.email && this.loginForm.value.password) {
       this.authService.login(this.loginForm.value.email, this.loginForm.value.password, !!this.loginForm.value.rememberMe)
         .subscribe({
           next: (data: LoginResponseType | DefaultResponseType) => {
@@ -62,13 +64,24 @@ export class LoginComponent implements OnInit {
 
           },
           error: (errorResponse: HttpErrorResponse) => {
+            this.incorrect = false;
             if (errorResponse.error && errorResponse.message) {
-              this._snackBar.open(errorResponse.error.message);
+              // this._snackBar.open(errorResponse.error.message);
+              this.errorMessage = errorResponse.error.message;
             } else {
-              this._snackBar.open('Ошибка авторизации');
+              this.errorMessage = 'Ошибка авторизации';
+              // this._snackBar.open('Ошибка авторизации');
             }
           }
         })
     }
+  }
+
+  get email() {
+    return this.loginForm.get('email');
+  }
+
+  get password() {
+    return this.loginForm.get('password');
   }
 }

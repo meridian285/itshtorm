@@ -9,6 +9,5 @@ export type CommentType = {
   user: {
     id: string,
     name: string,
-    reaction?: string
   }
 }

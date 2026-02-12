@@ -20,7 +20,7 @@ export class AuthService {
     this._isLogged$.next(value);
   }
 
-  public getIsLoggedIn() {
+  public getIsLoggedIn(): boolean {
     return this._isLogged$.getValue();
   }
 

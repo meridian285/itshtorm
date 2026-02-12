@@ -94,7 +94,7 @@ export class MainComponent implements OnInit {
   constructor(config: NgbCarouselConfig,
               private favorites: FavoriteService) {
     //интервал смены слайдера
-    config.interval = 100000;
+    config.interval = 10000;
   }
 
   ngOnInit(): void {
@@ -107,6 +107,7 @@ export class MainComponent implements OnInit {
           }
 
           this.favoriteArticles = data as ArticlesType[];
+
         },
         error: (error) => {
 
@@ -114,7 +115,7 @@ export class MainComponent implements OnInit {
       })
   }
 
-  open(type: string, value: string) {
+  open(type: string, value: string): void {
     this.type = type;
     this.selectedPoint = value;
     this.isDialogOpen = true;

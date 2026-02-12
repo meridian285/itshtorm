@@ -1,4 +1,5 @@
 import {
+  ChangeDetectorRef,
   Component,
   ElementRef,
   EventEmitter,
@@ -29,10 +30,12 @@ export class ModalDialogComponent implements OnInit, OnChanges {
   @Output() closed = new EventEmitter<void>();
 
   thankYouForm: boolean = false;
+  value='';
+  counter = 0;
 
   requestForm = this.fb.group({
     name: ['', [Validators.required]],
-    phone: ['', [Validators.required]],
+    phone: ['', [Validators.required, Validators.pattern('^[0-9]*$')]],
     service: ['', [Validators.required]],
     type: ['', [Validators.required]],
   });
@@ -40,10 +43,11 @@ export class ModalDialogComponent implements OnInit, OnChanges {
 
   constructor(private requestService: RequestService,
               private _snackBar: MatSnackBar,
-              private fb: FormBuilder) {
+              private fb: FormBuilder,
+              private cd: ChangeDetectorRef) {
   }
 
-  ngOnChanges(changes: SimpleChanges) {
+  ngOnChanges(changes: SimpleChanges): void {
     if (changes['selectedPoint'] && this.selectedPoint) {
       this.requestForm.patchValue({service: this.selectedPoint});
     }
@@ -52,13 +56,13 @@ export class ModalDialogComponent implements OnInit, OnChanges {
   ngOnInit(): void {
   }
 
-  close() {
+  close(): void {
     this.thankYouForm = false;
     this.requestForm.reset();
     this.closed.emit();
   }
 
-  sendRequest() {
+  sendRequest(): void {
     if (this.type === 'order') {
       if (this.requestForm && this.requestForm.value.name && this.requestForm.value.phone && this.requestForm.value.service && this.type) {
 
@@ -95,5 +99,13 @@ export class ModalDialogComponent implements OnInit, OnChanges {
         this.requestForm.reset();
       }
     }
+  }
+
+  get name() {
+    return this.requestForm.get('name');
+  }
+
+  get phone() {
+    return this.requestForm.get('phone');
   }
 }

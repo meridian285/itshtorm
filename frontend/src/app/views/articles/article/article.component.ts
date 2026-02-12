@@ -12,6 +12,7 @@ import {CommentsParamsType} from "../../../types/commentsParams.type";
 import {CurrentUrlType} from "../../../shared/current-url.type";
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {CommentActionType} from "../../../types/comment-action.type";
+import {BehaviorSubject, Observable} from "rxjs";
 
 @Component({
   selector: 'app-article',
@@ -25,10 +26,12 @@ export class ArticleComponent implements OnInit {
   commentsAllCount: number = 0
   currentUrl: CurrentUrlType = {url: ''};
   commentsCountQueryParams: CommentsParamsType = {comments: 0};
+  commentsCountQueryParamsForUpdate: number = 0;
   totalCommentsCountFromBack: number = 0;
   loggedIn: boolean = false;
-  commentsReaction: CommentActionType = [];
-  // loggedIn$: Observable<boolean> = this.authService.isLogged$;
+
+  private _isChangeReaction$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+    // loggedIn$: Observable<boolean> = this.authService.isLogged$;
 
   @ViewChild('articleText') articleText: ElementRef | null = null;
 
@@ -43,6 +46,18 @@ export class ArticleComponent implements OnInit {
               private commentsService: CommentsService) {
 
     this.loggedIn = this.authService.getIsLoggedIn();
+  }
+
+  public get isChangeReaction$(): Observable<boolean> {
+    return this._isChangeReaction$.asObservable();
+  }
+
+  public getIsChangeReaction() {
+    return this._isChangeReaction$.getValue();
+  }
+
+  public set isChangeReaction(value: boolean) {
+    this._isChangeReaction$.next(value);
   }
 
   ngOnInit(): void {
@@ -73,49 +88,16 @@ export class ArticleComponent implements OnInit {
               .subscribe(data => {
                 this.commentsCountQueryParams = data as CommentsParamsType;
 
-                let commentsCountQueryParams = +this.commentsCountQueryParams.comments
+                this.commentsCountQueryParamsForUpdate = +this.commentsCountQueryParams.comments
 
-                if (this.totalCommentsCountFromBack < commentsCountQueryParams) {
-                  commentsCountQueryParams = +this.totalCommentsCountFromBack;
+                if (this.totalCommentsCountFromBack < this.commentsCountQueryParamsForUpdate) {
+                  this.commentsCountQueryParamsForUpdate = +this.totalCommentsCountFromBack;
                 }
 
                 // получить комментарии для статьи
-                if (this.article) {
-                  const article = this.article
-                  this.commentsService.getComments(this.totalCommentsCountFromBack - commentsCountQueryParams, article.id)
-                    .subscribe((data: DefaultResponseType | CommentsType) => {
-                      if ((data as DefaultResponseType).error !== undefined) {
-                        const error = (data as DefaultResponseType).message;
-                        throw new Error(error);
-                      }
+                this.updateComments();
 
-                      const commentsData = data as CommentsType;
 
-                      this.commentsService.getArticleCommentActionsForUser(article.id)
-                        .subscribe(data => {
-                          if ((data as DefaultResponseType).error !== undefined) {
-                            const error = (data as DefaultResponseType).message;
-                            throw new Error(error);
-                          }
-
-                          this.commentsReaction = data as CommentActionType;
-
-                          if (this.commentsReaction.length > 0) {
-                            commentsData.comments.forEach(comment => {
-                              this.commentsReaction.forEach(item => {
-                                if (comment.id === item.comment) {
-                                  comment.user.reaction = item.action
-                                }
-                              })
-                            })
-                          }
-                        })
-
-                      this.comments = commentsData.comments;
-                      this.commentsAllCount = commentsData.allCount;
-
-                    })
-                }
               })
           });
       })
@@ -132,13 +114,33 @@ export class ArticleComponent implements OnInit {
       })
   }
 
-  addComment() {
+  updateComments(): void {
+    if (this.article) {
+      const article = this.article
+      this.commentsService.getComments(this.totalCommentsCountFromBack - this.commentsCountQueryParamsForUpdate, article.id)
+        .subscribe((data: DefaultResponseType | CommentsType) => {
+          if ((data as DefaultResponseType).error !== undefined) {
+            const error = (data as DefaultResponseType).message;
+            throw new Error(error);
+          }
+
+          const commentsData = data as CommentsType;
+
+          this.comments = commentsData.comments;
+          this.commentsAllCount = commentsData.allCount;
+
+        })
+    }
+  }
+
+  addComment(): void {
     if (this.article) {
       this.commentsService.addComment(this.commentText, this.article.id)
         .subscribe(data => {
           if ((data as DefaultResponseType).error !== undefined) {
             const message = (data as DefaultResponseType).message;
 
+            this.updateComments();
             this._snackBar.open(message);
             this.commentText = "";
 
@@ -149,11 +151,17 @@ export class ArticleComponent implements OnInit {
     }
   }
 
-  moreComments() {
+  moreComments(): void {
     this.commentsCountQueryParams = {comments: +this.commentsCountQueryParams.comments + 10};
 
     this.router.navigate([`/articles/${this.currentUrl.url}`], {
       queryParams: this.commentsCountQueryParams
     });
+  }
+
+  changeReaction(changeReaction: boolean) {
+    // console.log('article - changeReaction', changeReaction)
+
+    this.updateComments()
   }
 }

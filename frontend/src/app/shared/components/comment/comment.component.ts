@@ -1,10 +1,12 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {CommentType} from "../../../types/comment.type";
 import {CommentsService} from "../../services/comments.service";
 import {Reactions} from "../../enums/reactions";
-import {Subscriber} from "rxjs";
+import {BehaviorSubject, Observable, Subscriber} from "rxjs";
 import {DefaultResponseType} from "../../../types/default-response.type";
 import {MatSnackBar} from "@angular/material/snack-bar";
+import {CommentActionType} from "../../../types/comment-action.type";
+import {CommentActionTypeArray} from "../../../types/comment-action.type-array";
 
 @Component({
   selector: 'comment',
@@ -13,19 +15,47 @@ import {MatSnackBar} from "@angular/material/snack-bar";
 })
 export class CommentComponent implements OnInit {
 
+  @Output() actionEmitter = new EventEmitter<boolean>();
   @Input() comment!: CommentType;
 
-  changeReaction: Subscriber<string> = new Subscriber<string>();
+  currentStateReaction: CommentActionType = {comment: '', action: ''};
+
+
+
+  private _isChangeReaction$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
   constructor(private commentsService: CommentsService,
               private _snackBar: MatSnackBar,) {
+
   }
 
   ngOnInit(): void {
-
+    this.updateReaction();
   }
 
-  dislikeAction() {
+
+  updateReaction(): void {
+    this.commentsService.getActionForComment(this.comment.id)
+      .subscribe(data => {
+        if ((data as DefaultResponseType).error !== undefined) {
+          const error = (data as DefaultResponseType).message;
+          throw new Error(error);
+        }
+
+        const commentReaction = data as CommentActionType[];
+
+        if (commentReaction.length > 0) {
+          commentReaction.forEach(item => {
+            if(item.action !== '') {
+              this.currentStateReaction.comment = item.comment;
+              this.currentStateReaction.action = item.action;
+            }
+          })
+        }
+      })
+  }
+
+  dislikeAction(): void {
     this.commentsService.applyAction(this.comment.id, Reactions.Dislike)
       .subscribe(data => {
         if ((data as DefaultResponseType).error !== undefined) {
@@ -33,12 +63,18 @@ export class CommentComponent implements OnInit {
             const error = (data as DefaultResponseType).message;
             throw new Error(error);
           }
-          this._snackBar.open('Ваш голос учтен')
+
+          this.updateReaction();
+          this._snackBar.open('Ваш голос учтен');
+
+          this.actionEmitter.emit();
+
         }
       });
+
   }
 
-  likeAction() {
+  likeAction(): void {
     this.commentsService.applyAction(this.comment.id, Reactions.Like)
       .subscribe(data => {
         if ((data as DefaultResponseType).error !== undefined) {
@@ -46,12 +82,16 @@ export class CommentComponent implements OnInit {
             const error = (data as DefaultResponseType).message;
             throw new Error(error);
           }
+
+          this.updateReaction();
           this._snackBar.open('Ваш голос учтен')
+
+          this.actionEmitter.emit();
         }
       });
   }
 
-  violateAction() {
+  violateAction(): void {
     this.commentsService.applyAction(this.comment.id, Reactions.Violate)
       .subscribe(data => {
         if ((data as DefaultResponseType).error !== undefined) {

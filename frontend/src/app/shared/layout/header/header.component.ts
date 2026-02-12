@@ -47,7 +47,7 @@ export class HeaderComponent implements OnInit {
     this.selectedMenu = item;
   }
 
-  logout() {
+  logout(): void {
     this.authService.logout()
       .subscribe({
         next: () => {
@@ -59,7 +59,7 @@ export class HeaderComponent implements OnInit {
       })
   }
 
-  doLogout() {
+  doLogout(): void {
     this.authService.removeTokens();
     this.authService.userId = null;
     this._snackBar.open('Вы вышли из системы');
