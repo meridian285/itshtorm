@@ -23,7 +23,7 @@
           <input type="text" class="input" placeholder="Ваше имя"
                  [ngStyle]="{'border-color': requestForm.get('name')?.invalid
                  && (requestForm.get('name')?.dirty || requestForm.get('name')?.touched) ? 'red' : ''}"
-                  formControlName="name">
+                  formControlName="name" >
 
           <div class="error-message" *ngIf="name?.invalid && (name?.dirty || name?.touched)">
             <div class="text-danger" *ngIf="name?.errors?.['required']">
@@ -37,7 +37,7 @@
           <input type="text" class="input" placeholder="Ваш номер телефона" [(ngModel)]="value"
                  [ngStyle]="{'border-color': requestForm.get('phone')?.invalid
                  && (requestForm.get('phone')?.dirty || requestForm.get('phone')?.touched) ? 'red' : ''}"
-                 formControlName="phone">
+                 formControlName="phone" mask="(000) 000-00-00" prefix="+7 " [showMaskTyped]="false">
 
           <div class="error-message" *ngIf="phone?.invalid && (phone?.dirty || phone?.touched)">
             <div class="text-danger" *ngIf="phone?.errors?.['required']">

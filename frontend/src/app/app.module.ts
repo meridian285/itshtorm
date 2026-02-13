@@ -37,12 +37,14 @@ import {AuthInterceptor} from "./core/auth/auth.interceptor";
     NgbModule,
     CarouselModule,
     BrowserAnimationsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+
   ],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true},
     {provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: {duration: 2500}}
   ],
+  exports: [],
   bootstrap: [AppComponent]
 })
 export class AppModule {
