@@ -5,7 +5,6 @@ import {DefaultResponseType} from "../../types/default-response.type";
 import {environment} from "../../../environments/environment";
 import {CommentsType} from "../../types/comments.type";
 import {CommentActionType} from "../../types/comment-action.type";
-import {CommentActionTypeArray} from "../../types/comment-action.type-array";
 
 @Injectable({
   providedIn: 'root'

@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import {Observable} from "rxjs";
-import {ArticlesWithFilterType} from "../../types/articles-with-filter.type";
 import {DefaultResponseType} from "../../types/default-response.type";
 import {environment} from "../../../environments/environment";
 import {HttpClient} from "@angular/common/http";

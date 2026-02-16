@@ -11,7 +11,6 @@ import {ActiveParamsUtil} from "../../../shared/utils/active-params.util";
 import {AppliedFilterType} from "../../../types/applied-filter.type";
 import {CategoryWithCheckedType} from "../../../types/categoryWithChecked.type";
 import {map} from "rxjs";
-import {HttpParams} from "@angular/common/http";
 
 @Component({
   selector: 'app-blog',
@@ -153,23 +152,6 @@ export class BlogComponent implements OnInit {
     this.router.navigate(['/articles'], {
       queryParams: this.activeParams
     });
-
-
-    // this.activatedRouter.queryParams.subscribe(queryParams => {
-    //   console.log('queryParams', queryParams)
-    //   const params1 = new URLSearchParams(queryParams);
-    //   console.log('params1', params1)
-    // })
-
-    // const url1 = new URL("https://example.com?items1=apple,banana,orange");
-    //
-    // const params1 = new URLSearchParams(url1.search);
-    //
-    // console.log('params1', params1)
-    //
-    // const itemsString = params1.get("items");
-    // const itemsArray = itemsString ? itemsString.split(',') : [];
-    // console.log(itemsArray); // Output: ["apple", "banana", "orange"]
   }
 
   openPage(page: number): void {

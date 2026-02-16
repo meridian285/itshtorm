@@ -2,11 +2,10 @@ import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {CommentType} from "../../../types/comment.type";
 import {CommentsService} from "../../services/comments.service";
 import {Reactions} from "../../enums/reactions";
-import {BehaviorSubject, Observable, Subscriber} from "rxjs";
+import {BehaviorSubject} from "rxjs";
 import {DefaultResponseType} from "../../../types/default-response.type";
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {CommentActionType} from "../../../types/comment-action.type";
-import {CommentActionTypeArray} from "../../../types/comment-action.type-array";
 
 @Component({
   selector: 'comment',

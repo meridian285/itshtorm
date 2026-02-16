@@ -31,7 +31,6 @@ export class ModalDialogComponent implements OnInit, OnChanges {
 
   thankYouForm: boolean = false;
   value='';
-  counter = 0;
 
   requestForm = this.fb.group({
     name: ['', [Validators.required]],
@@ -43,8 +42,7 @@ export class ModalDialogComponent implements OnInit, OnChanges {
 
   constructor(private requestService: RequestService,
               private _snackBar: MatSnackBar,
-              private fb: FormBuilder,
-              private cd: ChangeDetectorRef) {
+              private fb: FormBuilder,) {
   }
 
   ngOnChanges(changes: SimpleChanges): void {

@@ -31,7 +31,6 @@ export class ArticleComponent implements OnInit {
   loggedIn: boolean = false;
 
   private _isChangeReaction$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
-    // loggedIn$: Observable<boolean> = this.authService.isLogged$;
 
   @ViewChild('articleText') articleText: ElementRef | null = null;
 
@@ -160,8 +159,6 @@ export class ArticleComponent implements OnInit {
   }
 
   changeReaction(changeReaction: boolean) {
-    // console.log('article - changeReaction', changeReaction)
-
     this.updateComments()
   }
 }

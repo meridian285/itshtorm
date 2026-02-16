@@ -15,10 +15,6 @@ export class ArticlesService {
 
   constructor(private http: HttpClient) { }
 
-  // getArticles(): Observable<ArticlesWithFilterType | DefaultResponseType> {
-  //   return this.http.get<ArticlesWithFilterType | DefaultResponseType>(environment.api + 'articles');
-  // }
-
   getArticle(url: string): Observable<ArticleType | DefaultResponseType> {
     return this.http.get<ArticleType | DefaultResponseType>(environment.api + 'articles/' + url);
   }

@@ -38,7 +38,6 @@ import {AuthInterceptor} from "./core/auth/auth.interceptor";
     CarouselModule,
     BrowserAnimationsModule,
     ReactiveFormsModule,
-
   ],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true},

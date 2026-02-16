@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import {FormBuilder, Validators} from "@angular/forms";
 import {AuthService} from "../../../core/auth/auth.service";
-import {HttpClient, HttpErrorResponse} from "@angular/common/http";
+import {HttpErrorResponse} from "@angular/common/http";
 import {DefaultResponseType} from "../../../types/default-response.type";
 import {LoginResponseType} from "../../../types/login-response.type";
 import {MatSnackBar} from "@angular/material/snack-bar";
-import {Route, Router} from "@angular/router";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-signup',
