@@ -8,9 +8,18 @@ import {ArticlesType} from "../../../types/articles.type";
 })
 export class ArticleCardComponent implements OnInit {
 
-  @Input() card!: ArticlesType;
+  @Input() card: ArticlesType;
 
   constructor() {
+    this.card = {
+      id: '',
+      title: '',
+      description: '',
+      image: '',
+      date: '',
+      category: '',
+      url: ''
+    }
   }
 
   ngOnInit(): void {

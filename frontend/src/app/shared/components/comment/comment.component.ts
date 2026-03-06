@@ -14,8 +14,8 @@ import {CommentActionType} from "../../../types/comment-action.type";
 })
 export class CommentComponent implements OnInit {
 
-  @Output() actionEmitter = new EventEmitter<boolean>();
-  @Input() comment!: CommentType;
+  @Output() actionEmitter: EventEmitter<string> = new EventEmitter<string>();
+  @Input() comment: CommentType;
 
   currentStateReaction: CommentActionType = {comment: '', action: ''};
 
@@ -26,6 +26,17 @@ export class CommentComponent implements OnInit {
   constructor(private commentsService: CommentsService,
               private _snackBar: MatSnackBar,) {
 
+    this.comment = {
+      id: '',
+      text: '',
+      date: '',
+      likesCount: 0,
+      dislikesCount: 0,
+      user: {
+        id: '',
+        name: '',
+      }
+    }
   }
 
   ngOnInit(): void {
@@ -50,6 +61,9 @@ export class CommentComponent implements OnInit {
               this.currentStateReaction.action = item.action;
             }
           })
+        } else {
+            this.currentStateReaction.comment = '';
+            this.currentStateReaction.action = '';
         }
       })
   }
@@ -66,7 +80,7 @@ export class CommentComponent implements OnInit {
           this.updateReaction();
           this._snackBar.open('Ваш голос учтен');
 
-          this.actionEmitter.emit();
+          this.actionEmitter.emit(this.comment.id);
 
         }
       });
@@ -85,7 +99,7 @@ export class CommentComponent implements OnInit {
           this.updateReaction();
           this._snackBar.open('Ваш голос учтен')
 
-          this.actionEmitter.emit();
+          this.actionEmitter.emit(this.comment.id);
         }
       });
   }

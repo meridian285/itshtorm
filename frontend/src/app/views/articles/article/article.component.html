@@ -77,7 +77,7 @@
 
               <comment [comment]="comment" *ngFor="let comment of comments" (actionEmitter)="changeReaction($event)"></comment>
 
-            <div class="more-comments"  *ngIf="totalCommentsCountFromBack > +commentsCountQueryParams.comments" (click)="moreComments()">
+            <div class="more-comments"  *ngIf="totalCommentsCountFromBack > +commentsCountForUpdate" (click)="moreComments()">
               Загрузить ещё комментарии
               <i>
                 <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">

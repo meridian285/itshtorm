@@ -12,6 +12,7 @@
     align-items: center;
     justify-content: space-between;
 
+
     .logo {
 
     }
@@ -81,6 +82,13 @@
       .text {
         text-align: right;
       }
+    }
+  }
+
+  @media screen and (max-width: 1280px){
+    .container {
+      padding-left: 20px;
+      padding-right: 20px;
     }
   }
 }
