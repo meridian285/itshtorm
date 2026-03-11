@@ -106,8 +106,7 @@ export class ArticleComponent implements OnInit {
       })
   }
 
-  updateComments(update: boolean = false, idComment: string = ''): void {
-    console.log('update', update)
+  updateComments(idComment: string = ''): void {
     if (idComment.length < 1) {
       if (this.article) {
         const article = this.article;
@@ -206,6 +205,8 @@ export class ArticleComponent implements OnInit {
             this.commentText = "";
 
             throw new Error(message);
+          } else if ((data as DefaultResponseType).error !== undefined) {
+
           }
 
         })
@@ -222,6 +223,6 @@ export class ArticleComponent implements OnInit {
   }
 
   changeReaction(idComment: string) {
-    this.updateComments(true, idComment);
+    this.updateComments( idComment);
   }
 }

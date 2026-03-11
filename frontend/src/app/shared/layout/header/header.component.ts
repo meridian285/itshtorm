@@ -43,8 +43,16 @@ export class HeaderComponent implements OnInit {
     });
   }
 
-  onMenuItemClick(item: string): void {
+  scrollToElement(event: Event, elementId: string, item: string): void {
+    event.preventDefault();
     this.selectedMenu = item;
+
+    setTimeout(() => {
+      const element = document.getElementById(elementId);
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }, 1);
   }
 
   logout(): void {

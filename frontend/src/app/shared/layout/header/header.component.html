@@ -7,19 +7,24 @@
       <nav>
         <ul>
           <li>
-            <a routerLink="/" fragment="servicesOffered" [class.active]="selectedMenu === 'services'" (click)="onMenuItemClick('services')">Услуги</a>
+            <a routerLink="/" [class.active]="selectedMenu === 'services'"
+               (click)="scrollToElement($event, 'servicesOffered', 'services')">Услуги</a>
           </li>
           <li>
-            <a routerLink="/" fragment="advantages"  [class.active]="selectedMenu === 'about-us'" (click)="onMenuItemClick('about-us')">О нас</a>
+            <a routerLink="/" [class.active]="selectedMenu === 'about-us'"
+               (click)="scrollToElement($event, 'advantages', 'about-us')">О нас</a>
           </li>
           <li>
-            <a [routerLink]="['/articles']" [queryParams]="{page: 1}" [class.active]="selectedMenu === 'articles'" (click)="onMenuItemClick('articles')">Статьи</a>
+            <a [routerLink]="['/articles']" [queryParams]="{page: 1}" [class.active]="selectedMenu === 'articles'"
+               (click)="scrollToElement($event, 'articles', 'articles')">Статьи</a>
           </li>
           <li>
-            <a routerLink="/" fragment="reviews" [class.active]="selectedMenu === 'reviews'" (click)="onMenuItemClick('reviews')">Отзывы</a>
+            <a routerLink="/" fragment="reviews" [class.active]="selectedMenu === 'reviews'"
+               (click)="scrollToElement($event, 'reviews', 'reviews')">Отзывы</a>
           </li>
           <li>
-            <a routerLink="/" fragment="contacts" [class.active]="selectedMenu === 'contacts'" (click)="onMenuItemClick('contacts')">Контакты</a>
+            <a routerLink="/" fragment="contacts" [class.active]="selectedMenu === 'contacts'"
+               (click)="scrollToElement($event, 'contacts', 'contacts')">Контакты</a>
           </li>
         </ul>
       </nav>
@@ -49,7 +54,7 @@
 
       <mat-menu #menu="matMenu">
         <button mat-menu-item (click)="logout()">
-          <span >Выйти</span>
+          <span>Выйти</span>
         </button>
       </mat-menu>
 
