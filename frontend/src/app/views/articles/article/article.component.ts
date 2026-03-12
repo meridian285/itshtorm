@@ -10,7 +10,7 @@ import {CommentsType} from "../../../types/comments.type";
 import {CommentType} from "../../../types/comment.type";
 import {CurrentUrlType} from "../../../shared/current-url.type";
 import {MatSnackBar} from "@angular/material/snack-bar";
-import {BehaviorSubject, delay, EMPTY, expand, Observable, of, repeat, takeWhile} from "rxjs";
+import {BehaviorSubject, Observable} from "rxjs";
 
 @Component({
   selector: 'app-article',
