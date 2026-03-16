@@ -1,17 +1,20 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpParams} from "@angular/common/http";
-import {Observable} from "rxjs";
+import {catchError, Observable, throwError} from "rxjs";
 import {DefaultResponseType} from "../../types/default-response.type";
 import {environment} from "../../../environments/environment";
 import {CommentsType} from "../../types/comments.type";
 import {CommentActionType} from "../../types/comment-action.type";
+import {MatSnackBar} from "@angular/material/snack-bar";
 
 @Injectable({
   providedIn: 'root'
 })
 export class CommentsService {
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient,
+              private _snackBar: MatSnackBar
+  ) {
   }
 
   getComments(paramOffset: number, paramArticle: string): Observable<CommentsType | DefaultResponseType> {

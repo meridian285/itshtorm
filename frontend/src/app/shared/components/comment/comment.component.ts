@@ -2,10 +2,11 @@ import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {CommentType} from "../../../types/comment.type";
 import {CommentsService} from "../../services/comments.service";
 import {Reactions} from "../../enums/reactions";
-import {BehaviorSubject} from "rxjs";
+import {BehaviorSubject, catchError, of} from "rxjs";
 import {DefaultResponseType} from "../../../types/default-response.type";
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {CommentActionType} from "../../../types/comment-action.type";
+import {ArticlesType} from "../../../types/articles.type";
 
 @Component({
   selector: 'comment',
@@ -105,16 +106,24 @@ export class CommentComponent implements OnInit {
   }
 
   violateAction(): void {
-    this.commentsService.applyAction(this.comment.id, Reactions.Violate)
-      .subscribe(data => {
-        if ((data as DefaultResponseType).error !== undefined) {
-          if (data.error) {
-            const error = (data as DefaultResponseType).message;
-            throw new Error(error);
+      this.commentsService.applyAction(this.comment.id, Reactions.Violate)
+        .pipe(
+          catchError(err => {
+            if (err.status === 400) {
+              console.error(err);
+              this._snackBar.open('Жалоба уже была отправлена', 'OK', { duration: 4000 });
+            }
+            return of(err)
+          })
+        ).subscribe(data => {
+          if ((data as DefaultResponseType).error !== undefined) {
+            console.log('data', data)
+            if (data.error) {
+              const error = (data as DefaultResponseType).message;
+              throw new Error(error);
+            }
+            this._snackBar.open('Жалоба отправлена', 'OK', { duration: 4000 });
           }
-
-          this._snackBar.open('Жалоба отправлена')
-        }
-      });
+        });
   }
 }
