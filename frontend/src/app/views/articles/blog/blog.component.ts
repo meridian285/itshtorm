@@ -82,10 +82,6 @@ export class BlogComponent implements OnInit {
             this.articlesService.getArticles(this.activeParams)
               .subscribe((data: ArticlesWithFilterType | DefaultResponseType) => {
 
-                console.log(this.activeParams)
-
-
-
                 if ((data as DefaultResponseType).error !== undefined) {
                   const error = (data as DefaultResponseType).message;
                   throw new Error(error);

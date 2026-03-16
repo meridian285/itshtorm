@@ -15,13 +15,18 @@ export class HeaderComponent implements OnInit {
 
   selectedMenu: string | null = null;
   isLogged: boolean = true;
-  userInfo: UserInfoType | null = null;
+  userInfo: UserInfoType;
 
   constructor(private authService: AuthService,
               private _snackBar: MatSnackBar,
               private router: Router,
               private userService: UserService,
   ) {
+    this.userInfo = {
+      id: '',
+      name: '',
+      email: ''
+    }
   }
 
   ngOnInit(): void {
@@ -30,15 +35,15 @@ export class HeaderComponent implements OnInit {
       this.isLogged = isLoggedIn;
 
       if (this.isLogged) {
-          this.userService.getUserInfo()
-            .subscribe((data: UserInfoType | DefaultResponseType)=> {
-              if ((data as DefaultResponseType).error !== undefined) {
-                const error = (data as DefaultResponseType).message;
-                throw new Error(error);
-              }
+        this.userService.getUserInfo()
+          .subscribe((data: UserInfoType | DefaultResponseType) => {
+            if ((data as DefaultResponseType).error !== undefined) {
+              const error = (data as DefaultResponseType).message;
+              throw new Error(error);
+            }
 
-              this.userInfo = data as UserInfoType;
-            })
+            this.userInfo = data as UserInfoType;
+          })
       }
     });
   }
@@ -50,7 +55,7 @@ export class HeaderComponent implements OnInit {
     setTimeout(() => {
       const element = document.getElementById(elementId);
       if (element) {
-        element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        element.scrollIntoView({behavior: 'smooth', block: 'start'});
       }
     }, 1);
   }
