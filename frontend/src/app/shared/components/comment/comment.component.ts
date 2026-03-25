@@ -2,11 +2,10 @@ import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {CommentType} from "../../../types/comment.type";
 import {CommentsService} from "../../services/comments.service";
 import {Reactions} from "../../enums/reactions";
-import {BehaviorSubject, catchError, of} from "rxjs";
+import {catchError, of} from "rxjs";
 import {DefaultResponseType} from "../../../types/default-response.type";
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {CommentActionType} from "../../../types/comment-action.type";
-import {ArticlesType} from "../../../types/articles.type";
 
 @Component({
   selector: 'comment',
@@ -19,10 +18,6 @@ export class CommentComponent implements OnInit {
   @Input() comment: CommentType;
 
   currentStateReaction: CommentActionType = {comment: '', action: ''};
-
-
-
-  private _isChangeReaction$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
   constructor(private commentsService: CommentsService,
               private _snackBar: MatSnackBar,) {

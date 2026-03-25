@@ -70,14 +70,14 @@
           <div class="create-comment" *ngIf="loggedIn">
             <textarea placeholder="Напишите Ваш комментарий к статье..."
                       cols="114" rows="10" spellcheck="true" wrap="soft" [(ngModel)]="commentText"></textarea>
-            <button type="button" class="button btn-comment"(click)="addComment()">Опубликовать комментарий</button>
+            <button type="button" class="button btn-comment" (click)="addComment()">Опубликовать комментарий</button>
           </div>
 
           <div class="comments">
 
               <comment [comment]="comment" *ngFor="let comment of comments" (actionEmitter)="changeReaction($event)"></comment>
 
-            <div class="more-comments"  *ngIf="totalCommentsCountFromBack > displayedCommentsCount$.value" (click)="moreComments()">
+            <div class="more-comments"  *ngIf="totalCommentsCountFromBack > comments.length" (click)="moreComments()">
               Загрузить ещё комментарии
               <i>
                 <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">

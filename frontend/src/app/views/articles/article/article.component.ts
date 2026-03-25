@@ -30,7 +30,8 @@ export class ArticleComponent implements OnInit {
   totalCommentsCountFromBack: number = 0;
   article: ArticleType | null = null;
   relatedArticles: ArticlesType[] | null = null;
-  displayedCommentsCount$ = new BehaviorSubject<number>(3);
+  displayedCommentsCount$ = new BehaviorSubject<number>(0);
+  addComments: boolean = false;
 
   constructor(
     private articlesService: ArticlesService,
@@ -55,11 +56,11 @@ export class ArticleComponent implements OnInit {
             if ('error' in data) {
               throw new Error(data.message || 'Ошибка загрузки статьи');
             }
-            return { article: data as ArticleType, desiredCount };
+            return {article: data as ArticleType, desiredCount};
           }),
           catchError(err => {
             console.error(err);
-            this._snackBar.open('Не удалось загрузить статью', 'OK', { duration: 4000 });
+            this._snackBar.open('Не удалось загрузить статью', 'OK', {duration: 4000});
             return of(null);
           })
         );
@@ -73,32 +74,63 @@ export class ArticleComponent implements OnInit {
         if (this.articleText) {
           this.articleText.nativeElement.innerHTML = this.article.text;
         }
-        const countToLoad = Math.min(result.desiredCount, this.totalCommentsCountFromBack);
-        const offset = this.totalCommentsCountFromBack - countToLoad;
+
+        if (result.desiredCount < 3 || this.addComments) {
+          return this.commentsService.getComments(0, this.article.id).pipe(
+            map((data: CommentsType | DefaultResponseType) => {
+              if ('error' in data) {
+                throw new Error(data.message || 'Ошибка загрузки комментариев');
+              }
+
+              if (result.desiredCount < 3) {
+                data.comments = data.comments.slice(0, 3);
+              }
+
+              if (this.addComments) {
+                data.comments = data.comments.slice(0, 1);
+                this.addComments = false;
+              }
+
+              return data as CommentsType;
+            }),
+            catchError(err => {
+              console.error(err);
+              this._snackBar.open('Не удалось загрузить комментарии', 'OK', {duration: 4000});
+              return of({comments: [], allCount: 0});
+            })
+          )
+        }
+
+        let offset = Math.min(result.desiredCount, this.totalCommentsCountFromBack);
+
         return this.commentsService.getComments(offset, this.article.id).pipe(
           map((data: CommentsType | DefaultResponseType) => {
             if ('error' in data) {
               throw new Error(data.message || 'Ошибка загрузки комментариев');
             }
+
             return data as CommentsType;
           }),
           catchError(err => {
             console.error(err);
-            this._snackBar.open('Не удалось загрузить комментарии', 'OK', { duration: 4000 });
-            return of({ comments: [], allCount: 0 });
+            this._snackBar.open('Не удалось загрузить комментарии', 'OK', {duration: 4000});
+            return of({comments: [], allCount: 0});
           })
-        );
+        )
       })
-    ).subscribe((commentsData: {comments: CommentType[], allCount: number} | null) => {
+    ).subscribe((commentsData: { comments: CommentType[], allCount: number } | null) => {
       if (!commentsData) return;
 
       // Заменяем весь список
-      this.comments = [...commentsData.comments].sort((a, b) =>
+      const currentComments = this.comments;
+
+      this.comments = [...new Map([...currentComments, ...commentsData.comments].map(item => [item.id, item])).values()].sort((a, b) =>
         new Date(b.date).getTime() - new Date(a.date).getTime()
       );
 
       this.commentsAllCount = commentsData.allCount;
     });
+
     // Загрузка связанных статей (независимый поток)
     this.articlesService.getArticlesRelate().subscribe({
       next: (data: ArticlesType[] | DefaultResponseType) => {
@@ -112,33 +144,40 @@ export class ArticleComponent implements OnInit {
     });
   }
 
-  addComment() {
+  addComment(): void {
     if (!this.article || !this.commentText.trim()) return;
     this.commentsService.addComment(this.commentText, this.article.id).subscribe({
       next: (response) => {
         if (response.error) {
-          this._snackBar.open(response.message || 'Ошибка добавления', 'OK', { duration: 5000 });
+          this._snackBar.open(response.message || 'Ошибка добавления', 'OK', {duration: 5000});
           return;
         }
         // Увеличиваем отображаемое количество → подтянется новый коммент
         const currentCount = this.displayedCommentsCount$.value;
         this.displayedCommentsCount$.next(currentCount + 1);
+        this.addComments = true;
         this.commentText = '';
-        this._snackBar.open('Комментарий добавлен!', 'OK', { duration: 3000 });
+        this._snackBar.open('Комментарий добавлен!', 'OK', {duration: 3000});
       },
       error: err => {
         console.error(err);
-        this._snackBar.open('Не удалось добавить комментарий', 'OK', { duration: 5000 });
+        this._snackBar.open('Не удалось добавить комментарий', 'OK', {duration: 5000});
       }
     });
   }
 
-  changeReaction(commentId: string) {
+  changeReaction(commentId: string): void {
     if (!this.article) return;
-    this.displayedCommentsCount$.next(this.displayedCommentsCount$.value); // триггер перезагрузки
+    const value = this.displayedCommentsCount$.getValue();
+    this.displayedCommentsCount$.next(value); // триггер перезагрузки
   }
 
-  moreComments() {
+  moreComments(): void {
+    if (this.displayedCommentsCount$.value < 3) {
+      this.displayedCommentsCount$.next(3);
+      return;
+    }
+
     const current = this.displayedCommentsCount$.value;
     const remaining = this.totalCommentsCountFromBack - current;
     if (remaining <= 0) return;
