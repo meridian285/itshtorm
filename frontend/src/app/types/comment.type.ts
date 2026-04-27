@@ -8,4 +8,5 @@ export type CommentType = {
     id: string,
     name: string,
   }
+  action?: string;
 }

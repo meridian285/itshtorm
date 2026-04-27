@@ -11,6 +11,7 @@ import {CommentType} from "../../../types/comment.type";
 import {CurrentUrlType} from "../../../shared/current-url.type";
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {BehaviorSubject, catchError, combineLatest, distinctUntilChanged, map, of, switchMap} from "rxjs";
+import {CommentActionType} from "../../../types/comment-action.type";
 
 
 @Component({
@@ -28,7 +29,7 @@ export class ArticleComponent implements OnInit {
   currentUrl: CurrentUrlType = {url: ''};
   loggedIn: boolean = false;
   totalCommentsCountFromBack: number = 0;
-  article: ArticleType | null = null;
+  article: ArticleType;
   relatedArticles: ArticlesType[] | null = null;
   displayedCommentsCount$ = new BehaviorSubject<number>(0);
   addComments: boolean = false;
@@ -41,6 +42,19 @@ export class ArticleComponent implements OnInit {
     private commentsService: CommentsService
   ) {
     this.loggedIn = this.authService.getIsLoggedIn();
+
+    this.article = {
+      text: '',
+      comments: [],
+      commentsCount: 0,
+      id: '',
+      title: '',
+      description: '',
+      image: '',
+      date: '',
+      category: '',
+      url: ''
+    }
   }
 
   ngOnInit(): void {
@@ -70,12 +84,13 @@ export class ArticleComponent implements OnInit {
         if (!result?.article) return of(null);
         this.article = result.article;
         this.totalCommentsCountFromBack = result.article.commentsCount;
+
         // Устанавливаем текст статьи
-        if (this.articleText) {
-          this.articleText.nativeElement.innerHTML = this.article.text;
-        }
+        this.articleText.nativeElement.innerHTML = this.article.text;
 
         if (result.desiredCount < 3 || this.addComments) {
+
+
           return this.commentsService.getComments(0, this.article.id).pipe(
             map((data: CommentsType | DefaultResponseType) => {
               if ('error' in data) {
@@ -90,6 +105,19 @@ export class ArticleComponent implements OnInit {
                 data.comments = data.comments.slice(0, 1);
                 this.addComments = false;
               }
+
+              this.getArticleCommentActionsForUser()
+                .subscribe(actions => {
+                  const actionsUser = actions as CommentActionType[]
+
+                  data.comments.forEach(comment => {
+                    actionsUser.forEach(action => {
+                      if (comment.id === action.comment) {
+                        comment.action = action.action;
+                      }
+                    })
+                  })
+                });
 
               return data as CommentsType;
             }),
@@ -109,6 +137,17 @@ export class ArticleComponent implements OnInit {
               throw new Error(data.message || 'Ошибка загрузки комментариев');
             }
 
+            this.getArticleCommentActionsForUser()
+              .subscribe(actions => {
+                const actionsUser = actions as CommentActionType[];
+                data.comments.forEach(comment => {
+                  actionsUser.forEach(action => {
+                    if (comment.id === action.comment) {
+                      comment.action = action.action;
+                    }
+                  })
+                })
+              });
             return data as CommentsType;
           }),
           catchError(err => {
@@ -129,9 +168,11 @@ export class ArticleComponent implements OnInit {
       );
 
       this.commentsAllCount = commentsData.allCount;
+
+      console.log('this.comments from article', this.comments)
     });
 
-    // Загрузка связанных статей (независимый поток)
+    // Загрузка связанных статей
     this.articlesService.getArticlesRelate().subscribe({
       next: (data: ArticlesType[] | DefaultResponseType) => {
         if ('error' in data) {
@@ -142,6 +183,23 @@ export class ArticleComponent implements OnInit {
       },
       error: err => console.error('Ошибка связанных статей', err)
     });
+  }
+
+  getArticleCommentActionsForUser() {
+    return this.commentsService.getArticleCommentActionsForUser(this.article.id)
+      .pipe(
+        map((actions: CommentActionType[] | DefaultResponseType) => {
+          if ('error' in actions) {
+            throw new Error(actions.message || 'Ошибка загрузки реакций пользователя');
+          }
+          return actions;
+        }),
+        catchError(err => {
+          console.error(err);
+          this._snackBar.open('Не удалось загрузить реакции пользователя', 'OK', {duration: 4000});
+          return of({actions: []});
+        })
+      )
   }
 
   addComment(): void {
@@ -166,10 +224,14 @@ export class ArticleComponent implements OnInit {
     });
   }
 
-  changeReaction(commentId: string): void {
+  changeReaction(): void {
     if (!this.article) return;
-    const value = this.displayedCommentsCount$.getValue();
-    this.displayedCommentsCount$.next(value); // триггер перезагрузки
+    // console.log('commentId', commentId)
+    console.log('this.displayedCommentsCount$.value', this.displayedCommentsCount$.value)
+    const value = this.displayedCommentsCount$.value;
+    this.displayedCommentsCount$.next(value)
+
+    console.log('this.displayedCommentsCount$.value', this.displayedCommentsCount$.value)
   }
 
   moreComments(): void {

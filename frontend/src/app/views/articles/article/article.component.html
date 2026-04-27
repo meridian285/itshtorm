@@ -2,13 +2,13 @@
   <div class="container">
     <div class="bread-crumbs">
       <a routerLink="/articles" class="blog">Блог /</a>
-      <span class="bread-crumbs-title"> {{article?.title}}</span>
+      <span class="bread-crumbs-title"> {{article.title}}</span>
     </div>
 
     <div class="article-description">
       <div class="about-article">
-        <h1 class="article-title">{{article?.title}}</h1>
-        <div class="article-description-text">{{article?.description}}</div>
+        <h1 class="article-title">{{article.title}}</h1>
+        <div class="article-description-text">{{article.description}}</div>
       </div>
       <div class="article-image">
         <img src="../../../assets/images/articles/image1.png">
@@ -75,7 +75,7 @@
 
           <div class="comments">
 
-              <comment [comment]="comment" *ngFor="let comment of comments" (actionEmitter)="changeReaction($event)"></comment>
+              <comment [comment]="comment" *ngFor="let comment of comments" (actionEmitter)="changeReaction()"></comment>
 
             <div class="more-comments"  *ngIf="totalCommentsCountFromBack > comments.length" (click)="moreComments()">
               Загрузить ещё комментарии

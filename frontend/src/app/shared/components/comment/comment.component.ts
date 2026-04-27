@@ -31,37 +31,13 @@ export class CommentComponent implements OnInit {
       user: {
         id: '',
         name: '',
-      }
+      },
+      action: ''
     }
   }
 
   ngOnInit(): void {
-    this.updateReaction();
-  }
 
-
-  updateReaction(): void {
-    this.commentsService.getActionForComment(this.comment.id)
-      .subscribe(data => {
-        if ((data as DefaultResponseType).error !== undefined) {
-          const error = (data as DefaultResponseType).message;
-          throw new Error(error);
-        }
-
-        const commentReaction = data as CommentActionType[];
-
-        if (commentReaction.length > 0) {
-          commentReaction.forEach(item => {
-            if(item.action !== '') {
-              this.currentStateReaction.comment = item.comment;
-              this.currentStateReaction.action = item.action;
-            }
-          })
-        } else {
-            this.currentStateReaction.comment = '';
-            this.currentStateReaction.action = '';
-        }
-      })
   }
 
   dislikeAction(): void {
@@ -73,9 +49,31 @@ export class CommentComponent implements OnInit {
             throw new Error(error);
           }
 
-          this.updateReaction();
-          this._snackBar.open('Ваш голос учтен');
+          this.commentsService.getActionForComment(this.comment.id)
+            .subscribe(data => {
+              if ((data as DefaultResponseType).error !== undefined) {
+                const error = (data as DefaultResponseType).message;
+                throw new Error(error);
+              }
+              const commentReaction = data as CommentActionType[];
+              if (commentReaction.length > 0) {
+                commentReaction.forEach(item => {
+                  if(item.action !== '') {
+                    if (this.comment.action === 'like') {
+                      this.comment.likesCount -= 1;
+                    }
+                    this.comment.action = item.action;
+                    this.comment.dislikesCount += 1;
+                  }
+                })
+              } else {
+                this.comment.action = '';
+                this.comment.dislikesCount -= 1;
+              }
 
+            })
+
+          this._snackBar.open('Ваш голос учтен');
           this.actionEmitter.emit(this.comment.id);
 
         }
@@ -92,7 +90,29 @@ export class CommentComponent implements OnInit {
             throw new Error(error);
           }
 
-          this.updateReaction();
+          this.commentsService.getActionForComment(this.comment.id)
+            .subscribe(data => {
+              if ((data as DefaultResponseType).error !== undefined) {
+                const error = (data as DefaultResponseType).message;
+                throw new Error(error);
+              }
+              const commentReaction = data as CommentActionType[];
+              if (commentReaction.length > 0) {
+                commentReaction.forEach(item => {
+                  if(item.action !== '') {
+                    if (this.comment.action === 'dislike') {
+                      this.comment.dislikesCount -= 1;
+                    }
+                    this.comment.action = item.action;
+                    this.comment.likesCount += 1;
+                  }
+                })
+              } else {
+                this.comment.action = '';
+                this.comment.likesCount -= 1;
+              }
+            })
+
           this._snackBar.open('Ваш голос учтен')
 
           this.actionEmitter.emit(this.comment.id);
