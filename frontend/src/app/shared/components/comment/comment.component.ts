@@ -14,10 +14,8 @@ import {CommentActionType} from "../../../types/comment-action.type";
 })
 export class CommentComponent implements OnInit {
 
-  @Output() actionEmitter: EventEmitter<string> = new EventEmitter<string>();
+  // @Output() actionEmitter: EventEmitter<string> = new EventEmitter<string>();
   @Input() comment: CommentType;
-
-  currentStateReaction: CommentActionType = {comment: '', action: ''};
 
   constructor(private commentsService: CommentsService,
               private _snackBar: MatSnackBar,) {
@@ -49,32 +47,59 @@ export class CommentComponent implements OnInit {
             throw new Error(error);
           }
 
-          this.commentsService.getActionForComment(this.comment.id)
-            .subscribe(data => {
-              if ((data as DefaultResponseType).error !== undefined) {
-                const error = (data as DefaultResponseType).message;
-                throw new Error(error);
-              }
-              const commentReaction = data as CommentActionType[];
-              if (commentReaction.length > 0) {
-                commentReaction.forEach(item => {
-                  if(item.action !== '') {
-                    if (this.comment.action === 'like') {
-                      this.comment.likesCount -= 1;
-                    }
-                    this.comment.action = item.action;
-                    this.comment.dislikesCount += 1;
-                  }
-                })
-              } else {
-                this.comment.action = '';
-                this.comment.dislikesCount -= 1;
-              }
+          console.log('До')
+          console.log('this.comment', this.comment)
+          console.log('typeof this.comment.action', typeof this.comment.action)
+          console.log('this.comment.action', this.comment.action)
+          console.log('this.comment.dislikesCount', this.comment.dislikesCount)
 
-            })
+
+          if (this.comment.action === '') {
+            this.comment.action = 'dislike';
+            this.comment.dislikesCount += 1;
+          }
+
+          if (this.comment.action === 'dislike') {
+            this.comment.action = '';
+            this.comment.dislikesCount -= 1;
+          }
+
+          if (this.comment.action === 'like') {
+            this.comment.action = 'dislike';
+            this.comment.likesCount -= 1;
+            this.comment.dislikesCount += 1;
+          }
+
+          console.log('После')
+          console.log('typeof this.comment.action', typeof this.comment.action)
+          console.log('this.comment.action', this.comment.action)
+          console.log('this.comment.dislikesCount', this.comment.dislikesCount)
+
+          // this.commentsService.getActionForComment(this.comment.id)
+          //   .subscribe(data => {
+          //     if ((data as DefaultResponseType).error !== undefined) {
+          //       const error = (data as DefaultResponseType).message;
+          //       throw new Error(error);
+          //     }
+          //     const commentReaction = data as CommentActionType[];
+          //     if (commentReaction.length > 0) {
+          //       commentReaction.forEach(item => {
+          //         if(item.action !== '') {
+          //           if (this.comment.action === 'like') {
+          //             this.comment.likesCount -= 1;
+          //           }
+          //           this.comment.action = item.action;
+          //           this.comment.dislikesCount += 1;
+          //         }
+          //       })
+          //     } else {
+          //       this.comment.action = '';
+          //       this.comment.dislikesCount -= 1;
+          //     }
+          //   })
 
           this._snackBar.open('Ваш голос учтен');
-          this.actionEmitter.emit(this.comment.id);
+          // this.actionEmitter.emit();
 
         }
       });
@@ -115,7 +140,7 @@ export class CommentComponent implements OnInit {
 
           this._snackBar.open('Ваш голос учтен')
 
-          this.actionEmitter.emit(this.comment.id);
+          // this.actionEmitter.emit(this.comment.id);
         }
       });
   }

@@ -75,7 +75,7 @@
 
           <div class="comments">
 
-              <comment [comment]="comment" *ngFor="let comment of comments" (actionEmitter)="changeReaction()"></comment>
+              <comment [comment]="comment" *ngFor="let comment of comments"></comment>
 
             <div class="more-comments"  *ngIf="totalCommentsCountFromBack > comments.length" (click)="moreComments()">
               Загрузить ещё комментарии

@@ -168,8 +168,6 @@ export class ArticleComponent implements OnInit {
       );
 
       this.commentsAllCount = commentsData.allCount;
-
-      console.log('this.comments from article', this.comments)
     });
 
     // Загрузка связанных статей
@@ -224,15 +222,11 @@ export class ArticleComponent implements OnInit {
     });
   }
 
-  changeReaction(): void {
-    if (!this.article) return;
-    // console.log('commentId', commentId)
-    console.log('this.displayedCommentsCount$.value', this.displayedCommentsCount$.value)
-    const value = this.displayedCommentsCount$.value;
-    this.displayedCommentsCount$.next(value)
-
-    console.log('this.displayedCommentsCount$.value', this.displayedCommentsCount$.value)
-  }
+  // changeReaction(): void {
+  //   if (!this.article) return;
+  //   const value = this.displayedCommentsCount$.value;
+  //   this.displayedCommentsCount$.next(value);
+  // }
 
   moreComments(): void {
     if (this.displayedCommentsCount$.value < 3) {
