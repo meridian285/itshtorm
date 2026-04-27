@@ -114,6 +114,8 @@ export class ArticleComponent implements OnInit {
                     actionsUser.forEach(action => {
                       if (comment.id === action.comment) {
                         comment.action = action.action;
+                      } else {
+                        comment.action = '';
                       }
                     })
                   })
