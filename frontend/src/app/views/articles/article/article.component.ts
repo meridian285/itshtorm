@@ -89,8 +89,6 @@ export class ArticleComponent implements OnInit {
         this.articleText.nativeElement.innerHTML = this.article.text;
 
         if (result.desiredCount < 3 || this.addComments) {
-
-
           return this.commentsService.getComments(0, this.article.id).pipe(
             map((data: CommentsType | DefaultResponseType) => {
               if ('error' in data) {
@@ -146,6 +144,8 @@ export class ArticleComponent implements OnInit {
                   actionsUser.forEach(action => {
                     if (comment.id === action.comment) {
                       comment.action = action.action;
+                    }else {
+                      comment.action = '';
                     }
                   })
                 })
@@ -223,12 +223,6 @@ export class ArticleComponent implements OnInit {
       }
     });
   }
-
-  // changeReaction(): void {
-  //   if (!this.article) return;
-  //   const value = this.displayedCommentsCount$.value;
-  //   this.displayedCommentsCount$.next(value);
-  // }
 
   moreComments(): void {
     if (this.displayedCommentsCount$.value < 3) {

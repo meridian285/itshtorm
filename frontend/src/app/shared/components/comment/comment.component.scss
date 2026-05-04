@@ -56,6 +56,8 @@
       align-items: center;
 
       .comment-options-like-count {
+        text-align: right;
+        width: 15px;
         color: $black-text-color;
         font-family: Montserrat, sans-serif;
         font-size: 14px;
@@ -74,6 +76,8 @@
       align-items: center;
 
       .comment-options-dislike-count {
+        text-align: right;
+        width: 15px;
         color: $black-text-color;
         font-family: Montserrat, sans-serif;
         font-size: 14px;
