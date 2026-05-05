@@ -1,0 +1,93 @@
+<section class="signup" [formGroup]="signupForm">
+  <div class="container">
+    <div class="auth-form">
+      <div class="auth-title">
+        Регистрация на сайте
+      </div>
+      <div class="auth-inputs">
+        <div class="auth-input">
+          <input type="text" class="input name"
+                 [ngStyle]="{'border-color': name?.invalid
+                 && (name?.dirty || name?.touched) ? 'red' : ''}"
+                 placeholder="Ваше имя" formControlName="name">
+
+          <div class="error-message" *ngIf="name?.invalid && (name?.dirty || name?.touched)">
+            <div class="text-danger" *ngIf="name?.errors?.['required']">
+              Поле не должно быть пустым.
+            </div>
+            <div class="text-danger" *ngIf="name?.errors?.['pattern']">
+              Введите в поле имя и фамилию, на русском языке.
+            </div>
+          </div>
+        </div>
+
+        <div class="auth-input">
+          <input type="text" class="input"
+                 [ngStyle]="{'border-color': email?.invalid
+                 && (email?.dirty || email?.touched) ? 'red' : ''}"
+                 placeholder="Электронная почта" formControlName="email">
+
+          <div class="error-message" *ngIf="email?.invalid && (email?.dirty || email?.touched)">
+            <div class="text-danger" *ngIf="email?.errors?.['required']">
+              Поле не должно быть пустым.
+            </div>
+            <div class="text-danger" *ngIf="email?.errors?.['email']">
+              Не корректный адрес электронной почты.
+            </div>
+          </div>
+        </div>
+
+        <div class="auth-input">
+          <input type="password" class="input"
+                 [ngStyle]="{'border-color':password?.invalid
+                 && (password?.dirty || password?.touched) ? 'red' : ''}"
+                 placeholder="Пароль" formControlName="password">
+
+
+          <div class="error-message" *ngIf="password?.invalid && (password?.dirty || password?.touched)">
+            <div class="text-danger" *ngIf="password?.errors?.['required']">
+              Поле не должно быть пустым.
+            </div>
+            <div class="text-danger" *ngIf="password?.errors?.['pattern']">
+              Пароль должен быть не менее 8 символов, содержать как минимум 1 букву в верхнем регистре и как минимум 1
+              цифру.
+            </div>
+          </div>
+        </div>
+
+        <div class="auth-checkbox">
+          <div class="input-agree">
+            <input type="checkbox" id="agree" formControlName="agree">
+
+            <label for="agree">
+              Я принимаю <a routerLink="/agreement">условия пользовательского соглашения</a> и даю <a
+              routerLink="/agreement">согласие на обработку персональных данных.</a>
+            </label>
+          </div>
+
+          <div class="error-message" *ngIf="agree?.invalid && (agree?.dirty || agree?.touched)">
+            <div class="text-danger" *ngIf="agree?.errors?.['required']">
+              Необходимо принять пользовательское соглашение и согласие на обработку персональных данных.
+            </div>
+          </div>
+
+
+<!--          <div class="text-danger error-message" *ngIf="errorInfo.incorrectData">-->
+<!--            {{errorInfo.errorMessage}}-->
+<!--          </div>-->
+
+        </div>
+      </div>
+
+      <div class="auth-button">
+        <button type="button" class="button" (click)="signup()">Зарегистрироваться</button>
+      </div>
+      <div class="auth-link">
+        Уже есть аккаунт? <a routerLink="/login">Войдите</a>
+      </div>
+    </div>
+    <div class="page-image">
+      <img src="/assets/images/image-signup-page.png" alt="flower">
+    </div>
+  </div>
+</section>
